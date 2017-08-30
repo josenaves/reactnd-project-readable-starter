@@ -1,55 +1,67 @@
 import { combineReducers } from 'redux'
 
 import {
-  RECEIVE_CATEGORIES
+  RECEIVE_CATEGORIES,
+  RECEIVE_POSTS
 } from '../actions'
 
-// here we define the intial state for the app
-const initialState = {
-  posts: [],
-  comments: [],
-  categories: [
-    {name: 'blog', path: 'blog'},
-    {name: 'video', path: 'video'},
-    {name: 'drops', path: 'drops'}]
-}
+// TODO understand why we don't need this
+// // here we define the intial state for the app
+// const initialState = {
+//   posts: [],
+//   comments: [],
+//   categories: []
+// }
 
-const categoryReducer = (state = initialState, action) => {
-  console.log("state:", state)
-  console.log("action:", action)
+const CategoryReducer = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_CATEGORIES:
-      const { categories } = action
-      return [...categories]
+      return [ ...state, ...action.categories ]
     default:
-      return []
+      return state
   }
 }
 
-const PostReducer = (state = initialState, action) => {
-  console.log("state:", state)
-  console.log("action:", action)
-
+/*
+$ curl --header "Authorization: xcx"  http://localhost:5001/posts
+[ { "id":"8xf0y6ziyjabvozdd253nd",
+    "timestamp":1467166872634,
+    "title":"Udacity is the best place to learn React",
+    "body":"Everyone says so after all.",
+    "author":"thingtwo",
+    "category":"react",
+    "voteScore":6,
+    "deleted":false
+  },
+  {
+    "id":"6ni6ok3ym7mf1p33lnez",
+    "timestamp":1468479767190,
+    "title":"Learn Redux in 10 minutes!",
+    "body":"Just kidding. It takes more than 10 minutes to learn technology.",
+    "author":"thingone",
+    "category":"redux",
+    "voteScore":-5,
+    "deleted":false
+  } ]
+*/
+const PostReducer = (state = [], action) => {
   switch (action.type) {
+    case RECEIVE_POSTS:
+      return [...state, ...action.posts]
     default:
-      return []
+      return state
   }
 }
 
-const ComentReducer = (state = initialState, action) => {
-  console.log("state:", state)
-  console.log("action:", action)
-
+const ComentReducer = (state = [], action) => {
   switch (action.type) {
     default:
-      return []
+      return state
   }
 }
 
 export default combineReducers({
-  categories: categoryReducer,
+  categories: CategoryReducer,
   posts: PostReducer,
   comments: ComentReducer
 })
-
-//export default categoryReducer
