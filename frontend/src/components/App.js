@@ -9,9 +9,7 @@ class App extends Component {
 
   componentWillMount() {
     this.props.getAllCategories();
-    //this.props.getPosts('voteScore');
-    //this.props.getPosts('timestamp');
-    this.props.getPosts('category');
+    this.props.getPosts('voteScore');
   }
 
   render() {
