@@ -9,27 +9,35 @@ export const REMOVE_POST = 'REMOVE_POST'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
-export function addPost(post) {
-  return {
-    type: ADD_POST,
-    post
-  }
-}
+export const addPost = (post) => ({
+  type: ADD_POST,
+  post
+})
 
-export const receivePosts = (posts) => ({
+const receivePosts = (posts) => ({
   type: RECEIVE_POSTS,
   posts
 })
 
-export const getPosts = () => (dispatch) => {
-  fetchPosts()
-    .then(data => {
-      dispatch(receivePosts(data))
-    })
-    .catch(err => console.error(err))
+export const getPosts = (sortBy) => async (dispatch) => {
+  try {
+    const posts = await fetchPosts()
+
+    console.log("Will sort by", sortBy)
+    console.log("(before) posts: ", posts)
+
+    posts.sort( (a, b) => a[sortBy] - b[sortBy] )
+    
+    console.log("(after) posts: ", posts)
+    
+    dispatch(receivePosts(posts))
+
+  } catch(err) {
+    console.error("Error getting posts", err)
+  }
 }
 
-export const receiveCategories = (categories) => ({
+const receiveCategories = (categories) => ({
   type: RECEIVE_CATEGORIES,
   categories
 })
