@@ -26,7 +26,7 @@ export const getPosts = (sortBy) => async (dispatch) => {
     console.log("Will sort by", sortBy)
     console.log("(before) posts: ", posts)
 
-    posts.sort( (a, b) => a[sortBy] - b[sortBy] )
+    posts.sort( (a, b) => b[sortBy] - a[sortBy] )
     
     console.log("(after) posts: ", posts)
     
