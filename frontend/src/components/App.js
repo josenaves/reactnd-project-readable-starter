@@ -16,17 +16,26 @@ class App extends Component {
     const { categories, posts } = this.props.state;
     return (
       <div>
-      <div className="App">
-        <h2>Categories</h2>
-        <CategoryList categories={categories} />
-      </div>
 
-      <div>
-        <h2>Posts</h2>
         <div>
-          <PostList posts={posts}/>
+          <h2>Sort by</h2>
+          <select>
+            <option value="date" default>Date</option>
+            <option value="votes">Votes</option>
+          </select>
         </div>
-      </div>
+
+        <div>
+          <h2>Categories</h2>
+          <CategoryList categories={categories} />
+        </div>
+
+        <div>
+          <h2>Posts</h2>
+          <div>
+            <PostList posts={posts}/>
+          </div>
+        </div>
 
       </div>
     );
