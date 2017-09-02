@@ -1,5 +1,6 @@
 import { fetchCategories, fetchPosts } from '../utils/api.js'
 
+// defina action constants
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const GET_POST = 'GET_POST'
@@ -8,6 +9,8 @@ export const EDIT_POST = 'EDIT_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
+
+export const DEFINE_SORT_ORDER = 'DEFINE_SORT_ORDER'
 
 export const addPost = (post) => ({
   type: ADD_POST,
@@ -48,4 +51,9 @@ export const getCategories = () => (dispatch) => {
       dispatch(receiveCategories(data.categories))
     })
     .catch(err => console.error(err))
-}
+  }
+
+  export const defineSortOrder = (sort) => (dispatch) => ({
+    type: DEFINE_SORT_ORDER,
+    sort
+  })
