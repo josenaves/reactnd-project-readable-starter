@@ -10,7 +10,7 @@ export const REMOVE_POST = 'REMOVE_POST'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
-export const DEFINE_SORT_ORDER = 'DEFINE_SORT_ORDER'
+export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 
 export const addPost = (post) => ({
   type: ADD_POST,
@@ -22,17 +22,16 @@ const receivePosts = (posts) => ({
   posts
 })
 
-export const getPosts = (sortBy) => async (dispatch) => {
+export const getPosts = (sortOrder) => async (dispatch) => {
   try {
     const posts = await fetchPosts()
-
-    console.log("Will sort by", sortBy)
-    console.log("(before) posts: ", posts)
-
-    posts.sort( (a, b) => b[sortBy] - a[sortBy] )
+    console.log("sortOrder", sortOrder)
     
-    console.log("(after) posts: ", posts)
-    
+    if (sortOrder.order === 'desc') {
+      posts.sort( (a, b) => b[sortOrder.field] - a[sortOrder.field] )
+    } else {
+      posts.sort( (a, b) => a[sortOrder.field] - b[sortOrder.field] )
+    }
     dispatch(receivePosts(posts))
 
   } catch(err) {
@@ -47,13 +46,13 @@ const receiveCategories = (categories) => ({
 
 export const getCategories = () => (dispatch) => {
   fetchCategories()
-    .then(data => {
-      dispatch(receiveCategories(data.categories))
-    })
-    .catch(err => console.error(err))
-  }
-
-  export const defineSortOrder = (sort) => (dispatch) => ({
-    type: DEFINE_SORT_ORDER,
-    sort
+  .then(data => {
+    dispatch(receiveCategories(data.categories))
   })
+  .catch(err => console.error(err))
+}
+
+export const defineSortOrder = (sortOrder) => (dispatch) => ({
+  type: CHANGE_SORT_ORDER,
+  sort: sortOrder
+})

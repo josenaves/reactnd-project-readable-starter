@@ -8,8 +8,10 @@ import './App.css'
 class App extends Component {
 
   componentWillMount() {
+    console.log("state", this.state);
+    console.log("props", this.props);
     this.props.getAllCategories();
-    this.props.getPosts('voteScore');
+    this.props.getPosts(this.props.state.sort);
   }
 
   render() {
@@ -20,9 +22,12 @@ class App extends Component {
         <div>
           <h2>Sort by</h2>
           <select>
+            <option value="votes" selected>Votes</option>
             <option value="date" default>Date</option>
-            <option value="votes">Votes</option>
           </select>
+
+          <input type="radio" name="order" value="asc"/>Ascending
+          <input type="radio" name="order" value="desc" checked/> Descending
         </div>
 
         <div>
