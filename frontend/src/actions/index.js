@@ -1,6 +1,6 @@
 import { fetchCategories, fetchPosts } from '../utils/api.js'
 
-// defina action constants
+// define action constants
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const GET_POST = 'GET_POST'
@@ -12,6 +12,7 @@ export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
 export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 
+// define action creators
 export const addPost = (post) => ({
   type: ADD_POST,
   post
@@ -52,7 +53,8 @@ export const getCategories = () => (dispatch) => {
   .catch(err => console.error(err))
 }
 
-export const defineSortOrder = (sortOrder) => (dispatch) => ({
+// action creator for a synchronous action (change sort order)
+export const changeSortOrder = (sortOrder) => ({
   type: CHANGE_SORT_ORDER,
   sort: sortOrder
 })

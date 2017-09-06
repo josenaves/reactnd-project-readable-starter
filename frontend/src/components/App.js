@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getCategories, getPosts } from '../actions'
+import { getCategories, getPosts, changeSortOrder } from '../actions'
 import CategoryList from './CategoryList';
 import PostList from './PostList';
 import './App.css'
@@ -12,6 +12,21 @@ class App extends Component {
     console.log("props", this.props);
     this.props.getAllCategories();
     this.props.getPosts(this.props.state.sort);
+  }
+
+  onSortOrderClicked(e) {
+    if (e.type === 'click' && e.clientX !== 0 && e.clientY !== 0) {
+      this.onSortOrderChanged(e);
+    } else {
+      console.log('prevent onclick on keypress');
+    }
+  }
+
+  onSortOrderChanged(event){
+    this.props.changeSortOrder({
+      field: 'date',
+      order: event.target.value
+    });
   }
 
   render() {
@@ -26,8 +41,29 @@ class App extends Component {
             <option value="date" default>Date</option>
           </select>
 
-          <input type="radio" name="order" value="asc"/>Ascending
-          <input type="radio" name="order" value="desc" checked/> Descending
+          <div onClick={this.onSortOrderClicked.bind(this)}>
+            <label>
+              <input 
+                type="radio"
+                name="order"
+                value="asc"
+                onChange={this.onSortOrderChanged.bind(this)}
+                checked={this.props.state.sort.order === 'asc'}/>
+                Ascending
+              </label>
+          </div>
+          
+          <div onClick={this.onSortOrderClicked.bind(this)}>
+            <label>
+              <input
+                type="radio"
+                name="order"
+                value="desc"
+                onChange={this.onSortOrderChanged.bind(this)}
+                checked={this.props.state.sort.order === 'desc'}/>
+                Descending
+              </label>
+          </div>
         </div>
 
         <div>
@@ -53,8 +89,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllCategories: () => dispatch(getCategories()),
-    getPosts: (sortBy) => dispatch(getPosts(sortBy)),
+    getAllCategories(){
+      dispatch(getCategories())
+    },
+    getPosts(sortBy){
+      dispatch(getPosts(sortBy))
+    },
+    changeSortOrder(sort){
+      dispatch(changeSortOrder(sort))
+    }
   }
 }
 
