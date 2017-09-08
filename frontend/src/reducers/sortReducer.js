@@ -1,10 +1,11 @@
 import {
-  CHANGE_SORT_ORDER
+  CHANGE_SORT_ORDER,
+  DESCENDING_ORDER
 } from '../actions'
 
 const defaultSortOrder = {
   field: 'voteScore',
-  order: 'desc'
+  order: DESCENDING_ORDER
 };
 
 export default (state = defaultSortOrder, action) => {
