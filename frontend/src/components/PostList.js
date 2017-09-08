@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 const PostList = ({ posts }) => {
   return (
@@ -9,6 +10,7 @@ const PostList = ({ posts }) => {
         <p>Score: {p.category}</p>
         <p>Auhtor: {p.author}</p>
         <p>Score: {p.voteScore}</p>
+        <p>Date: {moment(p.timestamp).format("MMM-DD-YYYY hh:mma")}</p>
         <p>{p.body}</p>
       </div>
       )}
