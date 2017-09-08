@@ -43,7 +43,7 @@ class App extends Component {
       <div>
 
         <div>
-          <h2>Sort by</h2>
+          <h2>Posts order</h2>
 
           <select value={sort.field} onChange={this.onSortFieldChanged}>
             <option value="voteScore">Votes</option>
