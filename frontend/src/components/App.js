@@ -4,6 +4,8 @@ import {
   getCategories,
   getPosts,
   changeSortOrder,
+  increasePostScore,
+  decreasePostScore,
   ASCENDING_ORDER,
   DESCENDING_ORDER 
 } from '../actions'
@@ -66,7 +68,7 @@ class App extends Component {
         <div>
           <h2>Posts</h2>
           <div>
-            <PostList posts={posts}/>
+            <PostList posts={posts} {...this.props} />
           </div>
         </div>
 
@@ -89,6 +91,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     changeSortOrder(sort){
       dispatch(changeSortOrder(sort))
+    },
+    increasePostScore(id){
+      dispatch(increasePostScore(id));
+    },
+    decreasePostScore(id){
+      dispatch(decreasePostScore(id));
     }
   }
 }
