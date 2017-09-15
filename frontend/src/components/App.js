@@ -14,9 +14,10 @@ import PostList from './PostList';
 import './App.css'
 
 class App extends Component {
+
   componentWillMount() {
     this.props.getAllCategories();
-    this.props.getPosts(this.props.sort);
+    this.props.getPosts();
   }
 
   onSortOrderChanged = (event) => {
@@ -26,7 +27,6 @@ class App extends Component {
       order: event.target.value
     };
     this.props.changeSortOrder(newSort);
-    this.props.getPosts(newSort);
   }
 
   onSortFieldChanged = (event) => {
@@ -36,7 +36,6 @@ class App extends Component {
       order: sort.order
     };
     this.props.changeSortOrder(newSort);
-    this.props.getPosts(newSort);
   }
 
   render() {
