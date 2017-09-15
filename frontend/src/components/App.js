@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {
   getCategories,
@@ -41,37 +42,39 @@ class App extends Component {
   render() {
     const { categories, posts, sort } = this.props;
     return (
-      <div>
-
+      <Router>
         <div>
-          <h2>Posts order</h2>
-
-          <select value={sort.field} onChange={this.onSortFieldChanged}>
-            <option value="voteScore">Votes</option>
-            <option value="timestamp">Timestamp</option>
-          </select>
-
-          &nbsp;
-
-          <select value={sort.order} onChange={this.onSortOrderChanged}>
-            <option value={ASCENDING_ORDER}>Ascending</option>
-            <option value={DESCENDING_ORDER}>Descending</option>
-          </select>
-        </div>
-
-        <div>
-          <h2>Categories</h2>
-          <CategoryList categories={categories} />
-        </div>
-
-        <div>
-          <h2>Posts</h2>
           <div>
-            <PostList posts={posts} {...this.props} />
-          </div>
-        </div>
+            <h2>Posts order</h2>
 
-      </div>
+            <select value={sort.field} onChange={this.onSortFieldChanged}>
+              <option value="voteScore">Votes</option>
+              <option value="timestamp">Timestamp</option>
+            </select>
+
+            &nbsp;
+
+            <select value={sort.order} onChange={this.onSortOrderChanged}>
+              <option value={ASCENDING_ORDER}>Ascending</option>
+              <option value={DESCENDING_ORDER}>Descending</option>
+            </select>
+          </div>
+
+          <div>
+            <h2>Categories</h2>
+            <CategoryList categories={categories} />
+          </div>
+
+          <Route exact path="/" render={ () => (
+            <div>
+              <h2>Posts</h2>
+              <div>
+                <PostList posts={posts} {...this.props} />
+              </div>
+            </div>
+          )} />
+        </div>
+      </Router>
     );
   }
 }
