@@ -1,4 +1,9 @@
-import { fetchCategories, fetchPosts } from '../utils/api.js'
+import {
+  fetchCategories,
+  fetchPosts,
+  increasePostScoreAPI,
+  decreasePostScoreAPI
+} from '../utils/api.js'
 
 // define action constants
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
@@ -14,6 +19,12 @@ export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 export const DESCENDING_ORDER = 'desc'
 export const ASCENDING_ORDER = 'asc'
 
+export const INCREASE_POST_SCORE = 'INCREASE_POST_SCORE'
+export const DECREASE_POST_SCORE = 'DECREASE_POST_SCORE'
+
+export const INCREASE_COMMENT_SCORE = 'INCREASE_COMMENT_SCORE'
+export const DECREASE_COMMENT_SCORE = 'DECREASE_COMMENT_SCORE'
+
 // define action creators
 export const addPost = (post) => ({
   type: ADD_POST,
@@ -25,16 +36,10 @@ const receivePosts = (posts) => ({
   posts
 })
 
-export const getPosts = (sortOrder) => async (dispatch) => {
+export const getPosts = () => async (dispatch) => {
   try {
     const posts = await fetchPosts()
-    if (sortOrder.order === ASCENDING_ORDER) {
-      posts.sort( (a, b) => a[sortOrder.field] - b[sortOrder.field] )
-    } else {
-      posts.sort( (a, b) => b[sortOrder.field] - a[sortOrder.field] )
-    }
     dispatch(receivePosts(posts))
-
   } catch(err) {
     console.error("Error getting posts", err)
   }
@@ -58,3 +63,29 @@ export const changeSortOrder = (sortOrder) => ({
   type: CHANGE_SORT_ORDER,
   sort: sortOrder
 })
+
+export const increasePostScore = (id, posts) => async (dispatch) => {
+  try {
+    await increasePostScoreAPI(id)
+    dispatch({
+      type: INCREASE_POST_SCORE,
+      id
+    })
+  }
+  catch(err) {
+    console.error("Error increasing post voteScore", err)
+  }
+}
+
+export const decreasePostScore = (id) => async (dispatch) => {
+  try {
+    await decreasePostScoreAPI(id)
+    dispatch({
+      type: DECREASE_POST_SCORE,
+      id
+    })
+  }
+  catch(err) {
+    console.error("Error decreasing post voteScore", err)
+  }
+}

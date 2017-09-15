@@ -1,5 +1,7 @@
 import {
-  RECEIVE_POSTS
+  RECEIVE_POSTS,
+  INCREASE_POST_SCORE,
+  DECREASE_POST_SCORE
 } from '../actions'
 
 /*
@@ -26,8 +28,34 @@ $ curl --header "Authorization: xcx"  http://localhost:5001/posts
 */
 export default (state = [], action) => {
   switch (action.type) {
+    
     case RECEIVE_POSTS:
       return [...action.posts]
+    
+    case INCREASE_POST_SCORE:
+      // find the current post and increment its score
+      return state.map(p => {
+        if (p.id !== action.id) {
+          return p;
+        }
+        return {
+          ...p,
+          voteScore: p.voteScore + 1
+        }
+      });
+
+    case DECREASE_POST_SCORE:
+      // find the current post and decrement its score
+      return state.map(p => {
+        if (p.id !== action.id) {
+          return p;
+        }
+        return {
+          ...p,
+          voteScore: p.voteScore -1
+        }
+      });
+
     default:
       return state
   }

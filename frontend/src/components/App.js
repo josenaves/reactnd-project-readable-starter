@@ -4,6 +4,8 @@ import {
   getCategories,
   getPosts,
   changeSortOrder,
+  increasePostScore,
+  decreasePostScore,
   ASCENDING_ORDER,
   DESCENDING_ORDER 
 } from '../actions'
@@ -12,9 +14,10 @@ import PostList from './PostList';
 import './App.css'
 
 class App extends Component {
+
   componentWillMount() {
     this.props.getAllCategories();
-    this.props.getPosts(this.props.sort);
+    this.props.getPosts();
   }
 
   onSortOrderChanged = (event) => {
@@ -24,7 +27,6 @@ class App extends Component {
       order: event.target.value
     };
     this.props.changeSortOrder(newSort);
-    this.props.getPosts(newSort);
   }
 
   onSortFieldChanged = (event) => {
@@ -34,7 +36,6 @@ class App extends Component {
       order: sort.order
     };
     this.props.changeSortOrder(newSort);
-    this.props.getPosts(newSort);
   }
 
   render() {
@@ -66,7 +67,7 @@ class App extends Component {
         <div>
           <h2>Posts</h2>
           <div>
-            <PostList posts={posts}/>
+            <PostList posts={posts} {...this.props} />
           </div>
         </div>
 
@@ -89,6 +90,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     changeSortOrder(sort){
       dispatch(changeSortOrder(sort))
+    },
+    increasePostScore(id){
+      dispatch(increasePostScore(id));
+    },
+    decreasePostScore(id){
+      dispatch(decreasePostScore(id));
     }
   }
 }
