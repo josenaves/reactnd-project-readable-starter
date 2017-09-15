@@ -7,6 +7,7 @@ import {
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
+  setCategoryFilter,
   ASCENDING_ORDER,
   DESCENDING_ORDER 
 } from '../actions'
@@ -39,6 +40,11 @@ class App extends Component {
     this.props.changeSortOrder(newSort);
   }
 
+  onCategoryFilterChanged = (event) => {
+    const newFilter = event.target.value;
+    this.props.setCategoryFilter(newFilter);
+  }
+
   render() {
     const { categories, posts, sort } = this.props;
     return (
@@ -62,7 +68,7 @@ class App extends Component {
 
           <div>
             <h2>Categories</h2>
-            <CategoryList categories={categories} />
+            <CategoryList categories={categories} onChange={this.onCategoryFilterChanged} />
           </div>
 
           <Route exact path="/" render={ () => (
@@ -73,6 +79,20 @@ class App extends Component {
               </div>
             </div>
           )} />
+
+          <Route exact path="/:category" render= { () => (
+            <div>
+              <h2>Posts by category</h2>
+            </div>
+          )} />
+
+          <Route exact path="/:category/:post_id" render= { () => (
+            <div>
+              <h2>Posts detail</h2>
+            </div>
+          )} />
+
+
         </div>
       </Router>
     );
@@ -99,6 +119,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     decreasePostScore(id){
       dispatch(decreasePostScore(id));
+    },
+    setCategoryFilter(filter){
+      dispatch(setCategoryFilter(filter));
     }
   }
 }

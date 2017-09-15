@@ -1,9 +1,9 @@
 import React from 'react';
 
-const CategoryList = ({ categories }) => {
+const CategoryList = ({ categories, onChange }) => {
   return (
-    <select>
-      <option value="all">All</option>
+    <select onChange={onChange} >
+      <option value="">All</option>
       { categories.map((category) =>
         <option value={category.name} key={category.name}>
           {category.name}
