@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Score from './Score';
@@ -33,7 +34,9 @@ const PostList = ({
 
       { filteredPosts && filteredPosts.map((p) =>
       <div key={p.id}>
-        <h3><b>{p.title}</b></h3>
+        <Link to={`/${p.category}/${p.id}`}>
+          <h3><b>{p.title}</b></h3>
+        </Link>
         <p>Date: {moment(p.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {p.author} :: Category [{p.category}]</p>
         <p>{p.body}</p>
 
