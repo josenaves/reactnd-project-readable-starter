@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {
   getCategories,
@@ -6,11 +7,12 @@ import {
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
-  ASCENDING_ORDER,
-  DESCENDING_ORDER 
+  setCategoryFilter
 } from '../actions'
-import CategoryList from './CategoryList';
+import Category from './Category';
 import PostList from './PostList';
+import CategoryHeader from './CategoryHeader';
+import SortingHeader from './SortingHeader';
 import './App.css'
 
 class App extends Component {
@@ -20,58 +22,56 @@ class App extends Component {
     this.props.getPosts();
   }
 
-  onSortOrderChanged = (event) => {
-    const { sort } = this.props;
-    const newSort = {
-      field: sort.field,
-      order: event.target.value
-    };
-    this.props.changeSortOrder(newSort);
-  }
-
-  onSortFieldChanged = (event) => {
-    const { sort } = this.props;
-    const newSort = {
-      field: event.target.value,
-      order: sort.order
-    };
-    this.props.changeSortOrder(newSort);
-  }
-
   render() {
-    const { categories, posts, sort } = this.props;
+    const { posts, categories, setCategoryFilter, sort, changeSortOrder, increasePostScore, decreasePostScore, filter } = this.props;
     return (
-      <div>
-
+      <Router>
         <div>
-          <h2>Posts order</h2>
 
-          <select value={sort.field} onChange={this.onSortFieldChanged}>
-            <option value="voteScore">Votes</option>
-            <option value="timestamp">Timestamp</option>
-          </select>
+          <Route exact path="/:category/:post_id" render= { () => (
+            <div>
+              <h2>Posts detail</h2>
+            </div>
+          )} />
 
-          &nbsp;
+          <Route exact path="/:category" render={ ({ match }) => (
+            <Category
+              sort={sort}
+              filter={match.params.category}
+              posts={posts}
+              changeOrderFunc={changeSortOrder}
+              increasePostScoreFunc={increasePostScore}
+              decreasePostScoreFunc={decreasePostScore}
+            />
+          )} />
 
-          <select value={sort.order} onChange={this.onSortOrderChanged}>
-            <option value={ASCENDING_ORDER}>Ascending</option>
-            <option value={DESCENDING_ORDER}>Descending</option>
-          </select>
+          <Route exact path="/" render={ () => (
+            <div>
+              <SortingHeader
+                sort={sort}
+                changeOrderFunc={changeSortOrder}
+              />
+
+              <CategoryHeader
+                categories={categories}
+                filterFunc={setCategoryFilter} 
+              />
+
+              <h2>Posts</h2>
+              <div>
+                <PostList
+                  posts={posts}
+                  sort={sort}
+                  filter={filter}
+                  increasePostScoreFunc={increasePostScore}
+                  decreasePostScoreFunc={decreasePostScore}
+                />
+              </div>
+            </div>
+          )} />
+
         </div>
-
-        <div>
-          <h2>Categories</h2>
-          <CategoryList categories={categories} />
-        </div>
-
-        <div>
-          <h2>Posts</h2>
-          <div>
-            <PostList posts={posts} {...this.props} />
-          </div>
-        </div>
-
-      </div>
+      </Router>
     );
   }
 }
@@ -96,6 +96,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     decreasePostScore(id){
       dispatch(decreasePostScore(id));
+    },
+    setCategoryFilter(filter){
+      dispatch(setCategoryFilter(filter));
     }
   }
 }
