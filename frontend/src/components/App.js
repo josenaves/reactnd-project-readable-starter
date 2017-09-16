@@ -9,10 +9,8 @@ import {
   decreasePostScore,
   setCategoryFilter
 } from '../actions'
+import Root from './Root';
 import Category from './Category';
-import PostList from './PostList';
-import CategoryHeader from './CategoryHeader';
-import SortingHeader from './SortingHeader';
 import './App.css'
 
 class App extends Component {
@@ -45,29 +43,17 @@ class App extends Component {
             />
           )} />
 
-          <Route exact path="/" render={ () => (
-            <div>
-              <SortingHeader
-                sort={sort}
-                changeOrderFunc={changeSortOrder}
-              />
-
-              <CategoryHeader
-                categories={categories}
-                filterFunc={setCategoryFilter} 
-              />
-
-              <h2>Posts</h2>
-              <div>
-                <PostList
-                  posts={posts}
-                  sort={sort}
-                  filter={filter}
-                  increasePostScoreFunc={increasePostScore}
-                  decreasePostScoreFunc={decreasePostScore}
-                />
-              </div>
-            </div>
+          <Route exact path="/" render={ ({ match }) => (
+            <Root
+              sort={sort}
+              changeOrderFunc={changeSortOrder}
+              categories={categories}
+              filterFunc={setCategoryFilter}
+              posts={posts}
+              filter={filter}
+              increasePostScoreFunc={increasePostScore}
+              decreasePostScoreFunc={decreasePostScore}
+            />
           )} />
 
         </div>
