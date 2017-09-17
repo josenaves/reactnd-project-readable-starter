@@ -1,6 +1,7 @@
 import {
   fetchCategories,
   fetchPosts,
+  fetchComments,
   increasePostScoreAPI,
   decreasePostScoreAPI
 } from '../utils/api.js'
@@ -14,6 +15,8 @@ export const EDIT_POST = 'EDIT_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
+
+export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 
 export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 export const DESCENDING_ORDER = 'desc'
@@ -42,6 +45,11 @@ export const getPosts = () => async (dispatch) => {
   try {
     const posts = await fetchPosts()
     dispatch(receivePosts(posts))
+
+    // for each post, go get its comments
+    posts.forEach((p) => {
+      dispatch(getCommentsByPost(p.id))
+    })
   } catch(err) {
     console.error("Error getting posts", err)
   }
@@ -59,6 +67,20 @@ export const getCategories = () => (dispatch) => {
   })
   .catch(err => console.error(err))
 }
+
+export const getCommentsByPost = (postId) => async (dispatch) => {
+  try {
+    const comments = await fetchComments(postId);
+    dispatch(receiveComments(comments))
+  } catch(err) {
+    console.error("Error getting posts", err)
+  }
+}
+
+const receiveComments = (comments) =>  ({
+  type: RECEIVE_COMMENTS,
+  comments
+});
 
 // action creator for a synchronous action (change sort order)
 export const changeSortOrder = (sortOrder) => ({
