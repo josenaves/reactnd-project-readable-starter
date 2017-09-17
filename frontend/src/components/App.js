@@ -35,7 +35,8 @@ class App extends Component {
 
           <Route exact path="/:category/:postId" render= { ({ match }) => {
             const { postId } = match.params;
-            const post = posts.find( (p) => p.id === postId)
+            const post = posts.find( (p) => p.id === postId )
+            const postComments = comments[postId];
 
             if (!post) {
               return (<p>No post found for post id ${postId}</p>);  
@@ -44,6 +45,7 @@ class App extends Component {
             return (
               <PostDetail
                 post={post}
+                comments={postComments}
                 increasePostScoreFunc={increasePostScore}
                 decreasePostScoreFunc={decreasePostScore}
               />
