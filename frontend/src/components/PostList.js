@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Score from './Score';
+import CommentsCount from './CommentsCount';
 import { ASCENDING_ORDER } from '../actions';
 
 const PostList = ({
   posts,
+  comments,
   increasePostScoreFunc,
   decreasePostScoreFunc,
   sort,
@@ -25,7 +27,7 @@ const PostList = ({
   } else {
     filteredPosts.sort( (a, b) => b[sort.field] - a[sort.field] )
   }
- 
+
   return (
     <div>
       { filteredPosts.length === 0 &&
@@ -46,6 +48,11 @@ const PostList = ({
           increaseScoreFunc={increasePostScoreFunc}
           decreaseScoreFunc={decreasePostScoreFunc}
         />
+        
+        <CommentsCount
+          postId={p.id}
+          comments={comments}
+        />
       </div>
       )}
     </div>
@@ -53,6 +60,8 @@ const PostList = ({
 }
 
 PostList.propTypes = {
+  posts: PropTypes.array.isRequired,
+  comments: PropTypes.object.isRequired,
   sort: PropTypes.object.isRequired,
   filter: PropTypes.string.isRequired,
   increasePostScoreFunc: PropTypes.func.isRequired,

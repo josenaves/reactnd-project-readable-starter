@@ -71,15 +71,16 @@ export const getCategories = () => (dispatch) => {
 export const getCommentsByPost = (postId) => async (dispatch) => {
   try {
     const comments = await fetchComments(postId);
-    dispatch(receiveComments(comments))
+    dispatch(receiveComments(comments, postId))
   } catch(err) {
     console.error("Error getting posts", err)
   }
 }
 
-const receiveComments = (comments) =>  ({
+const receiveComments = (comments, postId) =>  ({
   type: RECEIVE_COMMENTS,
-  comments
+  comments,
+  postId
 });
 
 // action creator for a synchronous action (change sort order)

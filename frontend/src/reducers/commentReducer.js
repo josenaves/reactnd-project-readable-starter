@@ -7,9 +7,11 @@ export default (initialState = {}, action) => {
       if (action.comments.length > 0) {
         const key = action.comments[0].parentId
         newState[key] = action.comments
+      } else {
+        newState[action.postId] = []
       }
       return newState
-      
+
     default:
       return initialState
   }

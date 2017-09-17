@@ -5,7 +5,12 @@ import CategoryHeader from './CategoryHeader';
 import PostList from './PostList';
 
 const Root = (props) => {
-  const { sort, posts, categories, filter, changeOrderFunc, filterFunc, increasePostScoreFunc, decreasePostScoreFunc } = props;
+  const {
+    sort, posts, categories, comments, filter,
+    changeOrderFunc, filterFunc,
+    increasePostScoreFunc, decreasePostScoreFunc
+  } = props;
+
   return (
     <div>
       <SortingHeader
@@ -19,15 +24,16 @@ const Root = (props) => {
       />
 
       <h2>Posts</h2>
-      <div>
-        <PostList
-          posts={posts}
-          sort={sort}
-          filter={filter}
-          increasePostScoreFunc={increasePostScoreFunc}
-          decreasePostScoreFunc={decreasePostScoreFunc}
-        />
-      </div>
+
+      <PostList
+        posts={posts}
+        comments={comments}
+        sort={sort}
+        filter={filter}
+        increasePostScoreFunc={increasePostScoreFunc}
+        decreasePostScoreFunc={decreasePostScoreFunc}
+      />
+
     </div>
   );
 };
@@ -36,6 +42,7 @@ Root.propTypes = {
   sort: PropTypes.object.isRequired,
   posts: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
+  comments: PropTypes.object.isRequired,
   filter: PropTypes.string.isRequired,
   changeOrderFunc: PropTypes.func.isRequired,
   filterFunc: PropTypes.func.isRequired,

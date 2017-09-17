@@ -23,7 +23,12 @@ class App extends Component {
   }
 
   render() {
-    const { posts, categories, setCategoryFilter, sort, changeSortOrder, increasePostScore, decreasePostScore, filter } = this.props;
+    const {
+      posts, categories, comments, sort, filter,
+      setCategoryFilter, changeSortOrder,
+      increasePostScore, decreasePostScore
+    } = this.props;
+
     return (
       <Router>
         <div>
@@ -63,6 +68,7 @@ class App extends Component {
               categories={categories}
               filterFunc={setCategoryFilter}
               posts={posts}
+              comments={comments}
               filter={filter}
               increasePostScoreFunc={increasePostScore}
               decreasePostScoreFunc={decreasePostScore}
