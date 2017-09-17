@@ -9,8 +9,27 @@ const PostDetail = ({
   increasePostScoreFunc, decreasePostScoreFunc,
   increaseCommentScoreFunc, decreaseCommentScoreFunc
 }) => {
+  let title = <h4>No comments</h4>;
+  let cmts;
+
+  if (comments.length !== 0) {
+    title = <h4>Comments</h4>;
+    cmts = comments.map((c) =>
+      <Comment
+        key={c.id}
+        id={c.id}
+        timestamp={c.timestamp}
+        body={c.body}
+        author={c.author}
+        score={c.voteScore}
+        increaseScoreFunc={increaseCommentScoreFunc}
+        decreaseScoreFunc={decreaseCommentScoreFunc}
+      />
+    );
+  }
+
   return (
-    <div >
+    <div>
       <h3>{post.title}</h3>
       
       <p>Date: {moment(post.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {post.author} :: Category [{post.category}]</p>
@@ -24,20 +43,8 @@ const PostDetail = ({
         decreaseScoreFunc={decreasePostScoreFunc}
       />
 
-      <h4>Comments</h4>
-      
-      { comments && comments.map(c => 
-        <Comment
-          key={c.id}
-          id={c.id}
-          timestamp={c.timestamp}
-          body={c.body}
-          author={c.author}
-          score={c.voteScore}
-          increaseScoreFunc={increaseCommentScoreFunc}
-          decreaseScoreFunc={decreaseCommentScoreFunc}
-        />
-      )}
+      { title }
+      { cmts }
 
     </div>
   );
