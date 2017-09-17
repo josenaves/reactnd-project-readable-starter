@@ -7,6 +7,8 @@ import {
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
+  increaseCommentScore,
+  decreaseCommentScore,
   setCategoryFilter,
   getCommentsByPost
 } from '../actions'
@@ -26,7 +28,8 @@ class App extends Component {
     const {
       posts, categories, comments, sort, filter,
       setCategoryFilter, changeSortOrder,
-      increasePostScore, decreasePostScore
+      increasePostScore, decreasePostScore,
+      increaseCommentScore, decreaseCommentScore
     } = this.props;
 
     return (
@@ -48,6 +51,8 @@ class App extends Component {
                 comments={postComments}
                 increasePostScoreFunc={increasePostScore}
                 decreasePostScoreFunc={decreasePostScore}
+                increaseCommentScoreFunc={increaseCommentScore}
+                decreaseCommentScoreFunc={decreaseCommentScore}
               />
             );
           }} />
@@ -109,7 +114,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     getCommentsByPost(postId) {
       dispatch(getCommentsByPost(postId))
-    }
+    },
+    increaseCommentScore(id){
+      dispatch(increaseCommentScore(id));
+    },
+    decreaseCommentScore(id){
+      dispatch(decreaseCommentScore(id));
+    },
   }
 }
 

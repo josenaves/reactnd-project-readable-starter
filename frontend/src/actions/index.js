@@ -3,7 +3,9 @@ import {
   fetchPosts,
   fetchComments,
   increasePostScoreAPI,
-  decreasePostScoreAPI
+  decreasePostScoreAPI,
+  increaseCommentScoreAPI,
+  decreaseCommentScoreAPI
 } from '../utils/api.js'
 
 // define action constants
@@ -120,3 +122,30 @@ export const decreasePostScore = (id) => async (dispatch) => {
     console.error("Error decreasing post voteScore", err)
   }
 }
+
+export const increaseCommentScore = (id) => async (dispatch) => {
+  try {
+    await increaseCommentScoreAPI(id)
+    dispatch({
+      type: INCREASE_COMMENT_SCORE,
+      id
+    })
+  }
+  catch(err) {
+    console.error("Error increasing comment score", err)
+  }
+}
+
+export const decreaseCommentScore = (id) => async (dispatch) => {
+  try {
+    await decreaseCommentScoreAPI(id)
+    dispatch({
+      type: DECREASE_COMMENT_SCORE,
+      id
+    })
+  }
+  catch(err) {
+    console.error("Error decreasing comment score", err)
+  }
+}
+

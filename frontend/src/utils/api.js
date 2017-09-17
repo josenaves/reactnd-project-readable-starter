@@ -72,3 +72,39 @@ export const fetchComments = async (postId) => {
     console.err(err)
   }
 }
+
+export const increaseCommentScoreAPI = async (commentId) => {
+  const options = {
+    method: 'post',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      option: 'upVote'
+    })
+  }
+
+  try {
+    const res = await fetch(`http://localhost:5001/comments/${commentId}`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }
+}
+
+export const decreaseCommentScoreAPI = async (commentId) => {
+  const options = {
+    method: 'post',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      option: 'downVote'
+    })
+  }
+
+  try {
+    const res = await fetch(`http://localhost:5001/comments/${commentId}`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }
+}

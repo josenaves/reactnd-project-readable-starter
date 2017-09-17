@@ -1,4 +1,8 @@
-import { RECEIVE_COMMENTS } from '../actions'
+import {
+  RECEIVE_COMMENTS,
+  INCREASE_COMMENT_SCORE,
+  DECREASE_COMMENT_SCORE
+} from '../actions'
 
 export default (initialState = {}, action) => {
   switch (action.type) {
@@ -10,7 +14,33 @@ export default (initialState = {}, action) => {
       } else {
         newState[action.postId] = []
       }
-      return newState
+      return newState;
+
+    case INCREASE_COMMENT_SCORE:
+      const nState = { ...initialState }
+      let nKeys = Object.keys(initialState)
+      nKeys.forEach( k => {
+        nState[k] = initialState[k].map( e => {
+          if (e.id === action.id) {
+            return { ...e, voteScore: e.voteScore + 1}
+          }
+          return e;
+        })
+      });
+      return nState;
+
+    case DECREASE_COMMENT_SCORE:
+      const dState = { ...initialState }
+      let dKeys = Object.keys(initialState)
+      dKeys.forEach( k => {
+        dState[k] = initialState[k].map( e => {
+          if (e.id === action.id) {
+            return { ...e, voteScore: e.voteScore - 1}
+          }
+          return e;
+        })
+      });
+      return dState;      
 
     default:
       return initialState

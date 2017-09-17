@@ -4,7 +4,12 @@ import moment from 'moment';
 import Comment from './Comment';
 import Score from './Score';
 
-const PostDetail = ({ post, increasePostScoreFunc, decreasePostScoreFunc, comments }) => {
+const PostDetail = ({
+  post, comments,
+  increasePostScoreFunc, decreasePostScoreFunc,
+  increaseCommentScoreFunc, decreaseCommentScoreFunc
+}) => {
+
   return (
     <div >
       <h3>{post.title}</h3>
@@ -21,13 +26,21 @@ const PostDetail = ({ post, increasePostScoreFunc, decreasePostScoreFunc, commen
       />
 
       <h4>Comments</h4>
-      
+
       { comments && comments.map(c => 
-        <Comment id={c.id} timestamp={c.timestamp} body={c.body} author={c.author} score={c.voteScore} />
+        <Comment
+          key={c.id}
+          id={c.id}
+          timestamp={c.timestamp}
+          body={c.body}
+          author={c.author}
+          score={c.voteScore}
+          increaseScoreFunc={increaseCommentScoreFunc}
+          decreaseScoreFunc={decreaseCommentScoreFunc}
+        />
       )}
 
     </div>
-
   );
 }
 
@@ -35,7 +48,9 @@ PostDetail.propTypes = {
   post: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
   increasePostScoreFunc: PropTypes.func.isRequired,
-  decreasePostScoreFunc: PropTypes.func.isRequired
+  decreasePostScoreFunc: PropTypes.func.isRequired,
+  increaseCommentScoreFunc: PropTypes.func.isRequired,
+  decreaseCommentScoreFunc: PropTypes.func.isRequired
 }
 
 export default PostDetail;
