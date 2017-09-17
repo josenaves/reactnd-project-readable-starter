@@ -7,7 +7,8 @@ import {
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
-  setCategoryFilter
+  setCategoryFilter,
+  getCommentsByPost
 } from '../actions'
 import Root from './Root';
 import Category from './Category';
@@ -97,6 +98,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setCategoryFilter(filter){
       dispatch(setCategoryFilter(filter));
+    },
+    getCommentsByPost(postId) {
+      dispatch(getCommentsByPost(postId))
     }
   }
 }
