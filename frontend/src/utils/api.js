@@ -62,3 +62,13 @@ export const decreasePostScoreAPI = (postId) => {
   )
   .catch(err => console.error(err))
 }
+
+export const fetchComments = async (postId) => {
+  const options = { method: 'get', headers: getAuthHeaders() }
+  try {
+    const res = await fetch(`http://localhost:5001/posts/${postId}/comments`, options)
+    return res.json()
+  } catch (err) {
+    console.err(err)
+  }
+}
