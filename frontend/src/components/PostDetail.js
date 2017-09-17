@@ -9,7 +9,6 @@ const PostDetail = ({
   increasePostScoreFunc, decreasePostScoreFunc,
   increaseCommentScoreFunc, decreaseCommentScoreFunc
 }) => {
-
   return (
     <div >
       <h3>{post.title}</h3>
@@ -26,7 +25,7 @@ const PostDetail = ({
       />
 
       <h4>Comments</h4>
-
+      
       { comments && comments.map(c => 
         <Comment
           key={c.id}
@@ -44,6 +43,10 @@ const PostDetail = ({
   );
 }
 
+PostDetail.defaultProps = {
+  comments: []
+}
+  
 PostDetail.propTypes = {
   post: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
