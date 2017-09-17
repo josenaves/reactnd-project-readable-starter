@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Score from './Score';
+import moment from 'moment';
 
 // {
 //   "id":"894tuq4ut84ut8v4t8wun89g",
@@ -16,9 +17,9 @@ import Score from './Score';
 const Comment = ({ id, author, timestamp, body, score, increaseScoreFunc, decreaseScoreFunc }) => {
   return (
     <div key={id}>
-      <p>{author} commented on {timestamp}</p>
+      <p>{author} commented on {moment(timestamp).format("MMM-DD-YYYY hh:mma")}</p>
       <p>{body}</p>
-
+      
       <Score
         id={id}
         score={score}
