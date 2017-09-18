@@ -10,7 +10,8 @@ import {
   increaseCommentScore,
   decreaseCommentScore,
   setCategoryFilter,
-  getCommentsByPost
+  getCommentsByPost,
+  changeCommentsOrder
 } from '../actions'
 import Root from './Root';
 import Category from './Category';
@@ -29,7 +30,8 @@ class App extends Component {
       posts, categories, comments, sort, filter,
       setCategoryFilter, changeSortOrder,
       increasePostScore, decreasePostScore,
-      increaseCommentScore, decreaseCommentScore
+      increaseCommentScore, decreaseCommentScore,
+      commentsOrder, changeCommentsOrder
     } = this.props;
 
     return (
@@ -49,6 +51,7 @@ class App extends Component {
               <PostDetail
                 post={post}
                 comments={postComments}
+                commentsOrder={commentsOrder}
                 increasePostScoreFunc={increasePostScore}
                 decreasePostScoreFunc={decreasePostScore}
                 increaseCommentScoreFunc={increaseCommentScore}
@@ -121,6 +124,9 @@ const mapDispatchToProps = (dispatch) => {
     decreaseCommentScore(id){
       dispatch(decreaseCommentScore(id));
     },
+    changeCommentsOrder(order) {
+      dispatch(changeCommentsOrder(order))
+    }
   }
 }
 

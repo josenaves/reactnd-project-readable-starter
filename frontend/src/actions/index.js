@@ -24,6 +24,8 @@ export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 export const DESCENDING_ORDER = 'desc'
 export const ASCENDING_ORDER = 'asc'
 
+export const CHANGE_COMMENTS_ORDER = 'CHANGE_COMMENTS_ORDER'
+
 export const INCREASE_POST_SCORE = 'INCREASE_POST_SCORE'
 export const DECREASE_POST_SCORE = 'DECREASE_POST_SCORE'
 
@@ -84,6 +86,11 @@ const receiveComments = (comments, postId) =>  ({
   comments,
   postId
 });
+
+export const changeCommentsOrder = (order) => ({
+  type: CHANGE_COMMENTS_ORDER,
+  sort: order
+})
 
 // action creator for a synchronous action (change sort order)
 export const changeSortOrder = (sortOrder) => ({

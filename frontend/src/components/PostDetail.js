@@ -3,12 +3,21 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Comment from './Comment';
 import Score from './Score';
+import { ASCENDING_ORDER } from '../actions';
 
 const PostDetail = ({
   post, comments,
+  commentsOrder,
   increasePostScoreFunc, decreasePostScoreFunc,
   increaseCommentScoreFunc, decreaseCommentScoreFunc
 }) => {
+
+  if (commentsOrder.order === ASCENDING_ORDER) {
+    comments.sort( (a, b) => a[commentsOrder.field] - b[commentsOrder.field] )
+  } else {
+    comments.sort( (a, b) => b[commentsOrder.field] - a[commentsOrder.field] )
+  }
+
   let title = <h4>No comments</h4>;
   let cmts;
 
@@ -57,6 +66,7 @@ PostDetail.defaultProps = {
 PostDetail.propTypes = {
   post: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
+  commentsOrder: PropTypes.object.isRequired,
   increasePostScoreFunc: PropTypes.func.isRequired,
   decreasePostScoreFunc: PropTypes.func.isRequired,
   increaseCommentScoreFunc: PropTypes.func.isRequired,
