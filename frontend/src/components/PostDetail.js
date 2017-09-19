@@ -56,11 +56,13 @@ const PostDetail = ({
         decreaseScoreFunc={decreasePostScoreFunc}
       />
 
+      { comments.length > 0 && 
       <SortingHeader
         title="Comments order"
         sort={commentsOrder}
         changeOrderFunc={changeOrderFunc}
       />
+      }
 
       { title }
       { cmts }
