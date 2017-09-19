@@ -1,8 +1,11 @@
 import {
   fetchCategories,
   fetchPosts,
+  fetchComments,
   increasePostScoreAPI,
-  decreasePostScoreAPI
+  decreasePostScoreAPI,
+  increaseCommentScoreAPI,
+  decreaseCommentScoreAPI
 } from '../utils/api.js'
 
 // define action constants
@@ -15,9 +18,13 @@ export const REMOVE_POST = 'REMOVE_POST'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
+export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
+
 export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 export const DESCENDING_ORDER = 'desc'
 export const ASCENDING_ORDER = 'asc'
+
+export const CHANGE_COMMENTS_ORDER = 'CHANGE_COMMENTS_ORDER'
 
 export const INCREASE_POST_SCORE = 'INCREASE_POST_SCORE'
 export const DECREASE_POST_SCORE = 'DECREASE_POST_SCORE'
@@ -42,6 +49,11 @@ export const getPosts = () => async (dispatch) => {
   try {
     const posts = await fetchPosts()
     dispatch(receivePosts(posts))
+
+    // for each post, go get its comments
+    posts.forEach((p) => {
+      dispatch(getCommentsByPost(p.id))
+    })
   } catch(err) {
     console.error("Error getting posts", err)
   }
@@ -59,6 +71,26 @@ export const getCategories = () => (dispatch) => {
   })
   .catch(err => console.error(err))
 }
+
+export const getCommentsByPost = (postId) => async (dispatch) => {
+  try {
+    const comments = await fetchComments(postId);
+    dispatch(receiveComments(comments, postId))
+  } catch(err) {
+    console.error("Error getting posts", err)
+  }
+}
+
+const receiveComments = (comments, postId) =>  ({
+  type: RECEIVE_COMMENTS,
+  comments,
+  postId
+});
+
+export const changeCommentsOrder = (order) => ({
+  type: CHANGE_COMMENTS_ORDER,
+  sort: order
+})
 
 // action creator for a synchronous action (change sort order)
 export const changeSortOrder = (sortOrder) => ({
@@ -97,3 +129,30 @@ export const decreasePostScore = (id) => async (dispatch) => {
     console.error("Error decreasing post voteScore", err)
   }
 }
+
+export const increaseCommentScore = (id) => async (dispatch) => {
+  try {
+    await increaseCommentScoreAPI(id)
+    dispatch({
+      type: INCREASE_COMMENT_SCORE,
+      id
+    })
+  }
+  catch(err) {
+    console.error("Error increasing comment score", err)
+  }
+}
+
+export const decreaseCommentScore = (id) => async (dispatch) => {
+  try {
+    await decreaseCommentScoreAPI(id)
+    dispatch({
+      type: DECREASE_COMMENT_SCORE,
+      id
+    })
+  }
+  catch(err) {
+    console.error("Error decreasing comment score", err)
+  }
+}
+

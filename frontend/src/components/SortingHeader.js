@@ -21,13 +21,13 @@ const onSortFieldChanged = (event) => {
   this.changeOrderFunc(newSort);
 }
 
-const SortingHeader = ({ sort, changeOrderFunc }) => {
+const SortingHeader = ({ title, sort, changeOrderFunc }) => {
   this.sort = sort;
   this.changeOrderFunc = changeOrderFunc;
 
   return (
     <div>
-      <h2>Posts order</h2>
+      <h2>{title}</h2>
 
       <select value={sort.field} onChange={onSortFieldChanged}>
         <option value="voteScore">Votes</option>
@@ -45,6 +45,7 @@ const SortingHeader = ({ sort, changeOrderFunc }) => {
 };
 
 SortingHeader.propTypes = {
+  title: PropTypes.string.isRequired,
   changeOrderFunc: PropTypes.func.isRequired,
   sort: PropTypes.object.isRequired
 }

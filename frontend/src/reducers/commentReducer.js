@@ -1,6 +1,48 @@
-export default (state = [], action) => {
+import {
+  RECEIVE_COMMENTS,
+  INCREASE_COMMENT_SCORE,
+  DECREASE_COMMENT_SCORE
+} from '../actions'
+
+export default (initialState = {}, action) => {
   switch (action.type) {
+    case RECEIVE_COMMENTS:
+      let newState = { ...initialState }
+      if (action.comments.length > 0) {
+        const key = action.comments[0].parentId
+        newState[key] = action.comments
+      } else {
+        newState[action.postId] = []
+      }
+      return newState;
+
+    case INCREASE_COMMENT_SCORE:
+      const nState = { ...initialState }
+      let nKeys = Object.keys(initialState)
+      nKeys.forEach( k => {
+        nState[k] = initialState[k].map( e => {
+          if (e.id === action.id) {
+            return { ...e, voteScore: e.voteScore + 1}
+          }
+          return e;
+        })
+      });
+      return nState;
+
+    case DECREASE_COMMENT_SCORE:
+      const dState = { ...initialState }
+      let dKeys = Object.keys(initialState)
+      dKeys.forEach( k => {
+        dState[k] = initialState[k].map( e => {
+          if (e.id === action.id) {
+            return { ...e, voteScore: e.voteScore - 1}
+          }
+          return e;
+        })
+      });
+      return dState;      
+
     default:
-      return state
+      return initialState
   }
 }

@@ -7,12 +7,15 @@ import {
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
-  setCategoryFilter
+  increaseCommentScore,
+  decreaseCommentScore,
+  setCategoryFilter,
+  getCommentsByPost,
+  changeCommentsOrder
 } from '../actions'
+import Root from './Root';
 import Category from './Category';
-import PostList from './PostList';
-import CategoryHeader from './CategoryHeader';
-import SortingHeader from './SortingHeader';
+import PostDetail from './PostDetail';
 import './App.css'
 
 class App extends Component {
@@ -23,16 +26,40 @@ class App extends Component {
   }
 
   render() {
-    const { posts, categories, setCategoryFilter, sort, changeSortOrder, increasePostScore, decreasePostScore, filter } = this.props;
+    const {
+      posts, categories, comments, sort, filter,
+      setCategoryFilter, changeSortOrder,
+      increasePostScore, decreasePostScore,
+      increaseCommentScore, decreaseCommentScore,
+      commentsOrder, changeCommentsOrder
+    } = this.props;
+
     return (
       <Router>
         <div>
 
-          <Route exact path="/:category/:post_id" render= { () => (
-            <div>
-              <h2>Posts detail</h2>
-            </div>
-          )} />
+          <Route exact path="/:category/:postId" render= { ({ match }) => {
+            const { postId } = match.params;
+            const post = posts.find( (p) => p.id === postId )
+            const postComments = comments[postId];
+
+            if (!post) {
+              return (<p>No post found for post id ${postId}</p>);  
+            }
+
+            return (
+              <PostDetail
+                post={post}
+                comments={postComments}
+                commentsOrder={commentsOrder}
+                changeOrderFunc={changeCommentsOrder}
+                increasePostScoreFunc={increasePostScore}
+                decreasePostScoreFunc={decreasePostScore}
+                increaseCommentScoreFunc={increaseCommentScore}
+                decreaseCommentScoreFunc={decreaseCommentScore}
+              />
+            );
+          }} />
 
           <Route exact path="/:category" render={ ({ match }) => (
             <Category
@@ -46,28 +73,17 @@ class App extends Component {
           )} />
 
           <Route exact path="/" render={ () => (
-            <div>
-              <SortingHeader
-                sort={sort}
-                changeOrderFunc={changeSortOrder}
-              />
-
-              <CategoryHeader
-                categories={categories}
-                filterFunc={setCategoryFilter} 
-              />
-
-              <h2>Posts</h2>
-              <div>
-                <PostList
-                  posts={posts}
-                  sort={sort}
-                  filter={filter}
-                  increasePostScoreFunc={increasePostScore}
-                  decreasePostScoreFunc={decreasePostScore}
-                />
-              </div>
-            </div>
+            <Root
+              sort={sort}
+              changeOrderFunc={changeSortOrder}
+              categories={categories}
+              filterFunc={setCategoryFilter}
+              posts={posts}
+              comments={comments}
+              filter={filter}
+              increasePostScoreFunc={increasePostScore}
+              decreasePostScoreFunc={decreasePostScore}
+            />
           )} />
 
         </div>
@@ -99,6 +115,18 @@ const mapDispatchToProps = (dispatch) => {
     },
     setCategoryFilter(filter){
       dispatch(setCategoryFilter(filter));
+    },
+    getCommentsByPost(postId) {
+      dispatch(getCommentsByPost(postId))
+    },
+    increaseCommentScore(id){
+      dispatch(increaseCommentScore(id));
+    },
+    decreaseCommentScore(id){
+      dispatch(decreaseCommentScore(id));
+    },
+    changeCommentsOrder(order) {
+      dispatch(changeCommentsOrder(order))
     }
   }
 }
