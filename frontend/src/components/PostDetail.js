@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Comment from './Comment';
 import Score from './Score';
+import SortingHeader from './SortingHeader';
 import { ASCENDING_ORDER } from '../actions';
 
 const PostDetail = ({
   post, comments,
   commentsOrder,
+  changeOrderFunc,
   increasePostScoreFunc, decreasePostScoreFunc,
   increaseCommentScoreFunc, decreaseCommentScoreFunc
 }) => {
@@ -52,8 +54,16 @@ const PostDetail = ({
         decreaseScoreFunc={decreasePostScoreFunc}
       />
 
+      <SortingHeader
+        title="Comments order"
+        sort={commentsOrder}
+        changeOrderFunc={changeOrderFunc}
+      />
+
       { title }
       { cmts }
+
+      
 
     </div>
   );
@@ -67,6 +77,7 @@ PostDetail.propTypes = {
   post: PropTypes.object.isRequired,
   comments: PropTypes.array.isRequired,
   commentsOrder: PropTypes.object.isRequired,
+  changeOrderFunc: PropTypes.func.isRequired,
   increasePostScoreFunc: PropTypes.func.isRequired,
   decreasePostScoreFunc: PropTypes.func.isRequired,
   increaseCommentScoreFunc: PropTypes.func.isRequired,

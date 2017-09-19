@@ -14,6 +14,7 @@ const Root = (props) => {
   return (
     <div>
       <SortingHeader
+        title="Posts order"
         sort={sort}
         changeOrderFunc={changeOrderFunc}
       />

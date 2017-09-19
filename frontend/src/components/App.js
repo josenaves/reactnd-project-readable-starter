@@ -52,6 +52,7 @@ class App extends Component {
                 post={post}
                 comments={postComments}
                 commentsOrder={commentsOrder}
+                changeOrderFunc={changeCommentsOrder}
                 increasePostScoreFunc={increasePostScore}
                 decreasePostScoreFunc={decreasePostScore}
                 increaseCommentScoreFunc={increaseCommentScore}
