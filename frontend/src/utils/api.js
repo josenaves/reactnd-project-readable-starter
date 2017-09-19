@@ -108,3 +108,18 @@ export const decreaseCommentScoreAPI = async (commentId) => {
     console.error(err)
   }
 }
+
+export const removeCommentAPI = async (commentId) => {
+  const options = {
+    method: 'delete',
+    headers: getAuthHeaders()
+  }
+
+  try {
+    const res = await fetch(`http://localhost:5001/comments/${commentId}`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }
+}
