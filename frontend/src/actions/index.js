@@ -5,7 +5,8 @@ import {
   increasePostScoreAPI,
   decreasePostScoreAPI,
   increaseCommentScoreAPI,
-  decreaseCommentScoreAPI
+  decreaseCommentScoreAPI,
+  removeCommentAPI
 } from '../utils/api.js'
 
 // define action constants
@@ -19,6 +20,8 @@ export const REMOVE_POST = 'REMOVE_POST'
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
+
+export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 
 export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 export const DESCENDING_ORDER = 'desc'
@@ -156,3 +159,15 @@ export const decreaseCommentScore = (id) => async (dispatch) => {
   }
 }
 
+export const removeComment = (id) => async (dispatch) => {
+  try {
+    await removeCommentAPI(id)
+    dispatch({
+      type: REMOVE_COMMENT,
+      id
+    })
+  }
+  catch(err) {
+    console.error("Error removing comment", err)
+  }
+}

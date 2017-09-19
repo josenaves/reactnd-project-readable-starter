@@ -11,7 +11,8 @@ const PostDetail = ({
   commentsOrder,
   changeOrderFunc,
   increasePostScoreFunc, decreasePostScoreFunc,
-  increaseCommentScoreFunc, decreaseCommentScoreFunc
+  increaseCommentScoreFunc, decreaseCommentScoreFunc,
+  removeCommentFunc
 }) => {
 
   if (commentsOrder.order === ASCENDING_ORDER) {
@@ -35,6 +36,7 @@ const PostDetail = ({
         score={c.voteScore}
         increaseScoreFunc={increaseCommentScoreFunc}
         decreaseScoreFunc={decreaseCommentScoreFunc}
+        removeCommentFunc={removeCommentFunc}
       />
     );
   }
@@ -62,9 +64,7 @@ const PostDetail = ({
 
       { title }
       { cmts }
-
-      
-
+     
     </div>
   );
 }
@@ -81,7 +81,8 @@ PostDetail.propTypes = {
   increasePostScoreFunc: PropTypes.func.isRequired,
   decreasePostScoreFunc: PropTypes.func.isRequired,
   increaseCommentScoreFunc: PropTypes.func.isRequired,
-  decreaseCommentScoreFunc: PropTypes.func.isRequired
+  decreaseCommentScoreFunc: PropTypes.func.isRequired,
+  removeCommentFunc: PropTypes.func.isRequired
 }
 
 export default PostDetail;

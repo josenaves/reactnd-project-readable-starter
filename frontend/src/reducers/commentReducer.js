@@ -1,7 +1,8 @@
 import {
   RECEIVE_COMMENTS,
   INCREASE_COMMENT_SCORE,
-  DECREASE_COMMENT_SCORE
+  DECREASE_COMMENT_SCORE,
+  REMOVE_COMMENT
 } from '../actions'
 
 export default (initialState = {}, action) => {
@@ -40,7 +41,15 @@ export default (initialState = {}, action) => {
           return e;
         })
       });
-      return dState;      
+      return dState;
+      
+    case REMOVE_COMMENT:
+      const rState = { ...initialState }
+      let rKeys = Object.keys(initialState)
+      rKeys.forEach( k => {
+        rState[k] = initialState[k].filter(e => e.id !== action.id)
+      });
+      return rState;
 
     default:
       return initialState
