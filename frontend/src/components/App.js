@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
+import * as uuid from 'uuid/v1';
 import {
   getCategories,
   getPosts,
@@ -13,7 +14,8 @@ import {
   setCategoryFilter,
   getCommentsByPost,
   changeCommentsOrder,
-  removeComment
+  removeComment,
+  addComment
 } from '../actions';
 import Root from './Root';
 import Category from './Category';
@@ -56,10 +58,19 @@ class App extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    const comment = { 
+      id: uuid(),
+      comment: this.state.comment,
+      author: this.state.author,
+      timestamp: Date.now(),
+      parentId: this.postId,
+      voteScore: 0
+    };
+    this.props.addComment(comment);
     this.closeCommentModal();
   }
 
-  renderModalComment() {
+  renderModalComment(post) {
     return (
       <Modal
         className='modal'
@@ -102,6 +113,8 @@ class App extends Component {
               return (<p>No post found for post id ${postId}</p>);  
             }
 
+            this.postId = postId; // TODO must find a better way to do this - used this variable on handleSubmit
+
             return (
               <div>
                 <PostDetail
@@ -116,7 +129,7 @@ class App extends Component {
                   removeCommentFunc={removeComment}
                   openCommentModalFunc={this.openCommentModal}
                 />
-                { this.renderModalComment() }
+                { this.renderModalComment(post) }
               </div>                            
             );
           }} />
@@ -190,6 +203,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     removeComment(id) {
       dispatch(removeComment(id))
+    },
+    addComment(data) {
+      dispatch(addComment(data))
     }
   }
 }

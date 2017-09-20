@@ -6,15 +6,17 @@ import Score from './Score';
 import SortingHeader from './SortingHeader';
 import { ASCENDING_ORDER } from '../actions';
 
-const PostDetail = ({
-  post, comments,
-  commentsOrder,
-  changeOrderFunc,
-  increasePostScoreFunc, decreasePostScoreFunc,
-  increaseCommentScoreFunc, decreaseCommentScoreFunc,
-  removeCommentFunc,
-  openCommentModalFunc
-}) => {
+const PostDetail = (props) => {
+
+  const {
+    post, comments,
+    commentsOrder,
+    changeOrderFunc,
+    increasePostScoreFunc, decreasePostScoreFunc,
+    increaseCommentScoreFunc, decreaseCommentScoreFunc,
+    removeCommentFunc,
+    openCommentModalFunc
+  } = props;
 
   if (commentsOrder.order === ASCENDING_ORDER) {
     comments.sort( (a, b) => a[commentsOrder.field] - b[commentsOrder.field] )
