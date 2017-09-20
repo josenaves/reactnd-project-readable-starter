@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Modal from 'react-modal';
 import {
   getCategories,
   getPosts,
@@ -13,17 +14,69 @@ import {
   getCommentsByPost,
   changeCommentsOrder,
   removeComment
-} from '../actions'
+} from '../actions';
 import Root from './Root';
 import Category from './Category';
 import PostDetail from './PostDetail';
-import './App.css'
+import './App.css';
 
 class App extends Component {
+
+  state = { 
+    commentModalOpen: false,
+    comment: '',
+    author: ''
+  }
 
   componentWillMount() {
     this.props.getAllCategories();
     this.props.getPosts();
+  }
+
+  openCommentModal = () => {
+    this.setState(() => ({
+      commentModalOpen: true
+    }))
+  }
+
+  closeCommentModal = () => {
+    this.setState(() => ({
+      commentModalOpen: false,
+      comment: '',
+      author: ''
+    }))
+  }
+
+  handleChange = (event) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.closeCommentModal();
+  }
+
+  renderModalComment() {
+    return (
+      <Modal
+        className='modal'
+        overlayClassName='overlay'
+        isOpen={this.state.commentModalOpen}
+        onRequestClose={this.closeCommentModal}
+        contentLabel='Modal'
+      >
+        <h4>Add a comment</h4>
+        <form onSubmit={this.handleSubmit}>
+          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleChange}/></label><br/>
+          <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleChange}/></label><br/>
+          <input type="submit" value="Submit" />
+        </form>
+
+      </Modal>      
+    );
   }
 
   render() {
@@ -50,17 +103,21 @@ class App extends Component {
             }
 
             return (
-              <PostDetail
-                post={post}
-                comments={postComments}
-                commentsOrder={commentsOrder}
-                changeOrderFunc={changeCommentsOrder}
-                increasePostScoreFunc={increasePostScore}
-                decreasePostScoreFunc={decreasePostScore}
-                increaseCommentScoreFunc={increaseCommentScore}
-                decreaseCommentScoreFunc={decreaseCommentScore}
-                removeCommentFunc={removeComment}
-              />
+              <div>
+                <PostDetail
+                  post={post}
+                  comments={postComments}
+                  commentsOrder={commentsOrder}
+                  changeOrderFunc={changeCommentsOrder}
+                  increasePostScoreFunc={increasePostScore}
+                  decreasePostScoreFunc={decreasePostScore}
+                  increaseCommentScoreFunc={increaseCommentScore}
+                  decreaseCommentScoreFunc={decreaseCommentScore}
+                  removeCommentFunc={removeComment}
+                  openCommentModalFunc={this.openCommentModal}
+                />
+                { this.renderModalComment() }
+              </div>                            
             );
           }} />
 
