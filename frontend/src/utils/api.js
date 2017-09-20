@@ -123,3 +123,26 @@ export const removeCommentAPI = async (commentId) => {
     console.error(err)
   }
 }
+
+export const addCommentAPI = async (data) => {
+  const options = {
+    method: 'post',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      id: data.id,
+      body: data.comment,
+      author: data.author,
+      parentId: data.parentId,
+      timestamp: data.timestamp,
+      voteScore: 0
+    })
+  }
+
+  try {
+    const res = await fetch(`http://localhost:5001/comments`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }
+}
