@@ -2,7 +2,8 @@ import {
   RECEIVE_COMMENTS,
   INCREASE_COMMENT_SCORE,
   DECREASE_COMMENT_SCORE,
-  REMOVE_COMMENT
+  REMOVE_COMMENT,
+  ADD_COMMENT
 } from '../actions'
 
 export default (initialState = {}, action) => {
@@ -50,6 +51,12 @@ export default (initialState = {}, action) => {
         rState[k] = initialState[k].filter(e => e.id !== action.id)
       });
       return rState;
+
+    case ADD_COMMENT:
+      const aState = { ...initialState }
+      const parentId = action.comment.parentId
+      aState[parentId] = [ ...aState[parentId], action.comment ]
+      return aState;      
 
     default:
       return initialState
