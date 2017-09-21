@@ -15,7 +15,8 @@ import {
   getCommentsByPost,
   changeCommentsOrder,
   removeComment,
-  addComment
+  addComment,
+  editComment
 } from '../actions';
 import Root from './Root';
 import Category from './Category';
@@ -25,7 +26,7 @@ import './App.css';
 class App extends Component {
 
   state = { 
-    commentModalOpen: false,
+    modalAddCommentOpen: false,
     comment: '',
     author: ''
   }
@@ -35,39 +36,39 @@ class App extends Component {
     this.props.getPosts();
   }
 
-  openCommentModal = () => {
+  openModalAddComment = () => {
     this.setState(() => ({
-      commentModalOpen: true
+      modalAddCommentOpen: true
     }))
   }
 
-  closeCommentModal = () => {
+  closeModalAddComment = () => {
     this.setState(() => ({
-      commentModalOpen: false,
+      modalAddCommentOpen: false,
       comment: '',
       author: ''
     }))
   }
 
-  handleChange = (event) => {
+  handleAddCommentChange = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     this.setState({ [name]: value });
   }
 
-  handleSubmit = (event) => {
+  handleAddCommentSubmit = (event) => {
     event.preventDefault();
     const comment = { 
       id: uuid(),
-      comment: this.state.comment,
+      body: this.state.comment,
       author: this.state.author,
       timestamp: Date.now(),
       parentId: this.postId,
       voteScore: 0
     };
     this.props.addComment(comment);
-    this.closeCommentModal();
+    this.closeModalAddComment();
   }
 
   renderModalComment(post) {
@@ -75,14 +76,14 @@ class App extends Component {
       <Modal
         className='modal'
         overlayClassName='overlay'
-        isOpen={this.state.commentModalOpen}
-        onRequestClose={this.closeCommentModal}
+        isOpen={this.state.modalAddCommentOpen}
+        onRequestClose={this.closeModalAddComment}
         contentLabel='Modal'
       >
         <h4>Add a comment</h4>
-        <form onSubmit={this.handleSubmit}>
-          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleChange}/></label><br/>
-          <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleChange}/></label><br/>
+        <form onSubmit={this.handleAddCommentSubmit}>
+          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleAddCommentChange}/></label><br/>
+          <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleAddCommentChange}/></label><br/>
           <input type="submit" value="Submit" />
         </form>
 
@@ -113,7 +114,7 @@ class App extends Component {
               return (<p>No post found for post id ${postId}</p>);  
             }
 
-            this.postId = postId; // TODO must find a better way to do this - used this variable on handleSubmit
+            this.postId = postId; // TODO must find a better way to do this - used this variable on handleAddCommentSubmit
 
             return (
               <div>
@@ -127,7 +128,7 @@ class App extends Component {
                   increaseCommentScoreFunc={increaseCommentScore}
                   decreaseCommentScoreFunc={decreaseCommentScore}
                   removeCommentFunc={removeComment}
-                  openCommentModalFunc={this.openCommentModal}
+                  openModalAddCommentFunc={this.openModalAddComment}
                 />
                 { this.renderModalComment(post) }
               </div>                            
@@ -206,6 +207,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addComment(data) {
       dispatch(addComment(data))
+    },
+    editComment(data) {
+      dispatch(editComment(data))
     }
   }
 }
