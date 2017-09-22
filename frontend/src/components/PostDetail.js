@@ -15,8 +15,8 @@ const PostDetail = (props) => {
     increasePostScoreFunc, decreasePostScoreFunc,
     increaseCommentScoreFunc, decreaseCommentScoreFunc,
     removeCommentFunc,
-    editCommentFunc,
-    openModalAddCommentFunc
+    openModalAddCommentFunc,
+    openModalEditCommentFunc
   } = props;
 
   if (commentsOrder.order === ASCENDING_ORDER) {
@@ -41,7 +41,7 @@ const PostDetail = (props) => {
         increaseScoreFunc={increaseCommentScoreFunc}
         decreaseScoreFunc={decreaseCommentScoreFunc}
         removeCommentFunc={removeCommentFunc}
-        editCommentFunc={removeCommentFunc}
+        openModalEditCommentFunc={openModalEditCommentFunc}
       />
     );
   }
@@ -93,8 +93,8 @@ PostDetail.propTypes = {
   increaseCommentScoreFunc: PropTypes.func.isRequired,
   decreaseCommentScoreFunc: PropTypes.func.isRequired,
   removeCommentFunc: PropTypes.func.isRequired,
-  editCommentFunc: PropTypes.func.isRequired,
-  openModalAddCommentFunc: PropTypes.func.isRequired
+  openModalAddCommentFunc: PropTypes.func.isRequired,
+  openModalEditCommentFunc: PropTypes.func.isRequired
 }
 
 export default PostDetail;

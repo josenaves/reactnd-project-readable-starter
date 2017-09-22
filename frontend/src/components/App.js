@@ -27,6 +27,7 @@ class App extends Component {
 
   state = { 
     modalAddCommentOpen: false,
+    modalEditCommentOpen: false,
     comment: '',
     author: ''
   }
@@ -50,7 +51,21 @@ class App extends Component {
     }))
   }
 
-  handleAddCommentChange = (event) => {
+  openModalEditComment = (body) => {
+    this.setState(() => ({
+      modalEditCommentOpen: true,
+      comment: body
+    }))
+  }
+
+  closeModalEditComment = () => {
+    this.setState(() => ({
+      modalEditCommentOpen: false,
+      comment: ''
+    }))
+  }  
+
+  handleCommentChange = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -71,7 +86,18 @@ class App extends Component {
     this.closeModalAddComment();
   }
 
-  renderModalComment(post) {
+  handleEditCommentSubmit = (event) => {
+    event.preventDefault();
+    const comment = {
+      id: this.postId,
+      body: this.state.comment,
+      timestamp: Date.now()
+    };
+    this.props.editComment(comment);
+    this.closeModalEditComment();
+  }
+
+  renderModalAddComment(post) {
     return (
       <Modal
         className='modal'
@@ -82,11 +108,29 @@ class App extends Component {
       >
         <h4>Add a comment</h4>
         <form onSubmit={this.handleAddCommentSubmit}>
-          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleAddCommentChange}/></label><br/>
-          <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleAddCommentChange}/></label><br/>
+          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleCommentChange}/></label><br/>
+          <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleCommentChange}/></label><br/>
           <input type="submit" value="Submit" />
         </form>
 
+      </Modal>      
+    );
+  }
+
+  renderModalEditComment(post) {
+    return (
+      <Modal
+        className='modal'
+        overlayClassName='overlay'
+        isOpen={this.state.modalEditCommentOpen}
+        onRequestClose={this.closeModalEditComment}
+        contentLabel='Modal'
+      >
+        <h4>Edit comment</h4>
+        <form onSubmit={this.handleEditCommentSubmit}>
+          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleCommentChange}/></label><br/>
+          <input type="submit" value="Submit" />
+        </form>
       </Modal>      
     );
   }
@@ -129,8 +173,10 @@ class App extends Component {
                   decreaseCommentScoreFunc={decreaseCommentScore}
                   removeCommentFunc={removeComment}
                   openModalAddCommentFunc={this.openModalAddComment}
+                  openModalEditCommentFunc={this.openModalEditComment}
                 />
-                { this.renderModalComment(post) }
+                { this.renderModalAddComment(post) }
+                { this.renderModalEditComment(post) }
               </div>                            
             );
           }} />

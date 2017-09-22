@@ -17,7 +17,7 @@ import moment from 'moment';
 const Comment = ({
   id, author, timestamp, body, score,
   increaseScoreFunc, decreaseScoreFunc,
-  removeCommentFunc, editCommentFunc
+  removeCommentFunc, openModalEditCommentFunc
 }) => {
 
   return (
@@ -25,7 +25,7 @@ const Comment = ({
       
       <p>
         <button onClick={ () => removeCommentFunc(id) }> x </button> &nbsp;
-        <button onClick={ () => editCommentFunc(id) }> e </button> &nbsp;
+        <button onClick={ () => openModalEditCommentFunc(body) }> e </button> &nbsp;
 
         {author} commented on {moment(timestamp).format("MMM-DD-YYYY hh:mma")}
       </p>
@@ -51,7 +51,7 @@ Comment.propTypes = {
   increaseScoreFunc: PropTypes.func.isRequired,
   decreaseScoreFunc: PropTypes.func.isRequired,
   removeCommentFunc: PropTypes.func.isRequired,
-  editCommentFunc: PropTypes.func.isRequired,
+  openModalEditCommentFunc: PropTypes.func.isRequired
 }
 
 export default Comment;
