@@ -14,10 +14,22 @@ import moment from 'moment';
 //   "parentDeleted":false
 // }
 
-const Comment = ({ id, author, timestamp, body, score, increaseScoreFunc, decreaseScoreFunc }) => {
+const Comment = ({
+  id, author, timestamp, body, score,
+  increaseScoreFunc, decreaseScoreFunc,
+  removeCommentFunc, openModalEditCommentFunc
+}) => {
+
   return (
     <div key={id}>
-      <p>{author} commented on {moment(timestamp).format("MMM-DD-YYYY hh:mma")}</p>
+      
+      <p>
+        <button onClick={ () => removeCommentFunc(id) }> x </button> &nbsp;
+        <button onClick={ () => openModalEditCommentFunc(body) }> e </button> &nbsp;
+
+        {author} commented on {moment(timestamp).format("MMM-DD-YYYY hh:mma")}
+      </p>
+
       <p>{body}</p>
       
       <Score
@@ -37,7 +49,9 @@ Comment.propTypes = {
   author: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   increaseScoreFunc: PropTypes.func.isRequired,
-  decreaseScoreFunc: PropTypes.func.isRequired
+  decreaseScoreFunc: PropTypes.func.isRequired,
+  removeCommentFunc: PropTypes.func.isRequired,
+  openModalEditCommentFunc: PropTypes.func.isRequired
 }
 
 export default Comment;

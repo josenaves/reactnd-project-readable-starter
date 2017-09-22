@@ -6,13 +6,18 @@ import Score from './Score';
 import SortingHeader from './SortingHeader';
 import { ASCENDING_ORDER } from '../actions';
 
-const PostDetail = ({
-  post, comments,
-  commentsOrder,
-  changeOrderFunc,
-  increasePostScoreFunc, decreasePostScoreFunc,
-  increaseCommentScoreFunc, decreaseCommentScoreFunc
-}) => {
+const PostDetail = (props) => {
+
+  const {
+    post, comments,
+    commentsOrder,
+    changeOrderFunc,
+    increasePostScoreFunc, decreasePostScoreFunc,
+    increaseCommentScoreFunc, decreaseCommentScoreFunc,
+    removeCommentFunc,
+    openModalAddCommentFunc,
+    openModalEditCommentFunc
+  } = props;
 
   if (commentsOrder.order === ASCENDING_ORDER) {
     comments.sort( (a, b) => a[commentsOrder.field] - b[commentsOrder.field] )
@@ -35,6 +40,8 @@ const PostDetail = ({
         score={c.voteScore}
         increaseScoreFunc={increaseCommentScoreFunc}
         decreaseScoreFunc={decreaseCommentScoreFunc}
+        removeCommentFunc={removeCommentFunc}
+        openModalEditCommentFunc={openModalEditCommentFunc}
       />
     );
   }
@@ -54,17 +61,20 @@ const PostDetail = ({
         decreaseScoreFunc={decreasePostScoreFunc}
       />
 
+      { comments.length > 0 && 
       <SortingHeader
         title="Comments order"
         sort={commentsOrder}
         changeOrderFunc={changeOrderFunc}
       />
+      }
 
       { title }
+
+      <button onClick={ () => openModalAddCommentFunc() }>Write a comment</button>
+
       { cmts }
-
-      
-
+     
     </div>
   );
 }
@@ -81,7 +91,10 @@ PostDetail.propTypes = {
   increasePostScoreFunc: PropTypes.func.isRequired,
   decreasePostScoreFunc: PropTypes.func.isRequired,
   increaseCommentScoreFunc: PropTypes.func.isRequired,
-  decreaseCommentScoreFunc: PropTypes.func.isRequired
+  decreaseCommentScoreFunc: PropTypes.func.isRequired,
+  removeCommentFunc: PropTypes.func.isRequired,
+  openModalAddCommentFunc: PropTypes.func.isRequired,
+  openModalEditCommentFunc: PropTypes.func.isRequired
 }
 
 export default PostDetail;
