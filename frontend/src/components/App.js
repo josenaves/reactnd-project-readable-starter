@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import * as uuid from 'uuid/v1';
+import AppBar from 'material-ui/AppBar';
 import {
   getCategories,
   getPosts,
@@ -148,6 +149,8 @@ class App extends Component {
     return (
       <Router>
         <div>
+
+          <AppBar title="Readable" />
 
           <Route exact path="/:category/:postId" render= { ({ match }) => {
             const { postId } = match.params;

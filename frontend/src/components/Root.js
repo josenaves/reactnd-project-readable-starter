@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SortingHeader from './SortingHeader';
-import CategoryHeader from './CategoryHeader';
+import AppToolbar from './AppToolbar';
 import PostList from './PostList';
 
 const Root = (props) => {
@@ -13,18 +12,15 @@ const Root = (props) => {
 
   return (
     <div>
-      <SortingHeader
-        title="Posts order"
+      <AppToolbar
+        filterTitle="Category"
+        categories={categories}
+        filterFunc={filterFunc} 
+        filter={filter}
+        sortingTitle="Order"
         sort={sort}
         changeOrderFunc={changeOrderFunc}
       />
-
-      <CategoryHeader
-        categories={categories}
-        filterFunc={filterFunc} 
-      />
-
-      <h2>Posts</h2>
 
       <PostList
         posts={posts}
@@ -34,7 +30,6 @@ const Root = (props) => {
         increasePostScoreFunc={increasePostScoreFunc}
         decreasePostScoreFunc={decreasePostScoreFunc}
       />
-
     </div>
   );
 };
