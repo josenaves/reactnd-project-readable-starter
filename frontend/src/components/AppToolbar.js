@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import {
@@ -36,6 +36,8 @@ const AppToolbar = ({ categories, filter, filterFunc, filterTitle, sort, changeO
 
   return (
     <Toolbar>
+      
+      { categories !== undefined &&
       <ToolbarGroup >
         <ToolbarTitle text={filterTitle} />
         <DropDownMenu value={filter} onChange={onCategoryFilterChanged}>
@@ -45,6 +47,7 @@ const AppToolbar = ({ categories, filter, filterFunc, filterTitle, sort, changeO
           )}
         </DropDownMenu>
       </ToolbarGroup>
+      }
 
       <ToolbarGroup >
         <ToolbarTitle text={sortingTitle} />
@@ -63,10 +66,10 @@ const AppToolbar = ({ categories, filter, filterFunc, filterTitle, sort, changeO
 }
 
 AppToolbar.propTypes = {
-  categories: PropTypes.array.isRequired,
-  filter: PropTypes.string.isRequired,
-  filterFunc: PropTypes.func.isRequired,
-  filterTitle: PropTypes.string.isRequired,
+  categories: PropTypes.array,
+  filter: PropTypes.string,
+  filterFunc: PropTypes.func,
+  filterTitle: PropTypes.string,
   sort: PropTypes.object.isRequired,
   changeOrderFunc: PropTypes.func.isRequired,
   sortingTitle: PropTypes.string.isRequired

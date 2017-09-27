@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import AppBar from 'material-ui/AppBar';
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import Modal from 'react-modal';
 import * as uuid from 'uuid/v1';
-import AppBar from 'material-ui/AppBar';
 import {
   getCategories,
   getPosts,
@@ -99,22 +102,52 @@ class App extends Component {
   }
 
   renderModalAddComment(post) {
+    const actions = [
+      <RaisedButton
+        label="Cancel"
+        secondary={true}
+        onClick={this.closeModalAddComment}
+      />,
+      <RaisedButton
+        label="Add"
+        primary={true}
+        onClick={this.handleAddCommentSubmit}
+      />
+    ];
+
     return (
-      <Modal
-        className='modal'
-        overlayClassName='overlay'
-        isOpen={this.state.modalAddCommentOpen}
-        onRequestClose={this.closeModalAddComment}
-        contentLabel='Modal'
+      <Dialog
+        title="New comment"
+        actions={actions}
+        modal={true}
+        open={this.state.modalAddCommentOpen}
       >
-        <h4>Add a comment</h4>
         <form onSubmit={this.handleAddCommentSubmit}>
           <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleCommentChange}/></label><br/>
           <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleCommentChange}/></label><br/>
-          <input type="submit" value="Submit" />
+          
+          <TextField
+            name="comment"
+            value={this.state.comment}
+            onChange={this.handleCommentChange}
+            hintText="Enter your comment"
+            floatingLabelText="Comment"
+            multiLine={true}
+            rows={2}
+          />
+          
+          <br/>
+
+          <TextField
+            name="author"
+            value={this.state.author}
+            onChange={this.handleCommentChange}
+            hintText="Enter the author"
+            floatingLabelText="Author"
+          />
         </form>
 
-      </Modal>      
+      </Dialog>
     );
   }
 
