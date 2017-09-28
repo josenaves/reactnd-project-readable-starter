@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Card, CardText, CardTitle } from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
 import Comment from './Comment';
 import Score from './Score';
-import SortingHeader from './SortingHeader';
+import AppToolbar from './AppToolbar';
 import { ASCENDING_ORDER } from '../actions';
 
 const PostDetail = (props) => {
@@ -48,32 +50,34 @@ const PostDetail = (props) => {
 
   return (
     <div>
-      <h3>{post.title}</h3>
-      
-      <p>Date: {moment(post.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {post.author} :: Category [{post.category}]</p>
 
-      <p>{post.body}</p>
-
-      <Score
-        id={post.id}
-        score={post.voteScore}
-        increaseScoreFunc={increasePostScoreFunc}
-        decreaseScoreFunc={decreasePostScoreFunc}
-      />
-
-      { comments.length > 0 && 
-      <SortingHeader
-        title="Comments order"
+      <AppToolbar
+        sortingTitle="Order"
         sort={commentsOrder}
         changeOrderFunc={changeOrderFunc}
       />
-      }
+
+      <Card>
+        <CardTitle title={post.title} subtitle={post.category} />
+        <CardText>Date: {moment(post.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {post.author} :: </CardText>
+        <CardText>{post.body}</CardText>
+        
+        <Score
+          id={post.id}
+          score={post.voteScore}
+          increaseScoreFunc={increasePostScoreFunc}
+          decreaseScoreFunc={decreasePostScoreFunc}
+        />
+      </Card>
 
       { title }
 
-      <button onClick={ () => openModalAddCommentFunc() }>Write a comment</button>
+      <RaisedButton
+        label="Write a comment"
+        onClick={ () => openModalAddCommentFunc() }
+        style={{ margin: 12 }} />
 
-      { cmts }
+      { cmts }      
      
     </div>
   );

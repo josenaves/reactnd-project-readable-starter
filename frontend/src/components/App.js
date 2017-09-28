@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Modal from 'react-modal';
+import AppBar from 'material-ui/AppBar';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import * as uuid from 'uuid/v1';
 import {
   getCategories,
@@ -98,41 +102,112 @@ class App extends Component {
   }
 
   renderModalAddComment(post) {
+    const actions = [
+      <RaisedButton
+        label="Cancel"
+        secondary={true}
+        onClick={this.closeModalAddComment}
+      />,
+      <RaisedButton
+        label="Add"
+        primary={true}
+        onClick={this.handleAddCommentSubmit}
+      />
+    ];
+
     return (
-      <Modal
-        className='modal'
-        overlayClassName='overlay'
-        isOpen={this.state.modalAddCommentOpen}
-        onRequestClose={this.closeModalAddComment}
-        contentLabel='Modal'
+      <Dialog
+        title="New comment"
+        actions={actions}
+        modal={true}
+        open={this.state.modalAddCommentOpen}
       >
-        <h4>Add a comment</h4>
         <form onSubmit={this.handleAddCommentSubmit}>
-          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleCommentChange}/></label><br/>
-          <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleCommentChange}/></label><br/>
-          <input type="submit" value="Submit" />
+          <TextField
+            name="comment"
+            value={this.state.comment}
+            onChange={this.handleCommentChange}
+            hintText="Enter your comment"
+            floatingLabelText="Comment"
+            multiLine={true}
+            rows={2}
+          />
+          
+          <br/>
+
+          <TextField
+            name="author"
+            value={this.state.author}
+            onChange={this.handleCommentChange}
+            hintText="Enter the author"
+            floatingLabelText="Author"
+          />
         </form>
 
-      </Modal>      
+      </Dialog>
     );
   }
 
   renderModalEditComment(post) {
+    const actions = [
+      <RaisedButton
+        label="Cancel"
+        secondary={true}
+        onClick={this.closeModalEditComment}
+      />,
+      <RaisedButton
+        label="Save"
+        primary={true}
+        onClick={this.handleEditCommentSubmit}
+      />
+    ];
+
     return (
-      <Modal
-        className='modal'
-        overlayClassName='overlay'
-        isOpen={this.state.modalEditCommentOpen}
-        onRequestClose={this.closeModalEditComment}
-        contentLabel='Modal'
+      <Dialog
+        title="Edit comment"
+        actions={actions}
+        modal={true}
+        open={this.state.modalEditCommentOpen}
       >
-        <h4>Edit comment</h4>
         <form onSubmit={this.handleEditCommentSubmit}>
-          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleCommentChange}/></label><br/>
-          <input type="submit" value="Submit" />
+          <TextField
+            name="comment"
+            value={this.state.comment}
+            onChange={this.handleCommentChange}
+            hintText="Enter your comment"
+            floatingLabelText="Comment"
+            multiLine={true}
+            rows={2}
+          />
         </form>
-      </Modal>      
+      </Dialog>      
     );
+  }
+
+  renderAppBar() {
+    const { location, history } = this.props;
+
+    console.log(location);
+    console.log(history);
+    
+    const isHome = location.pathname === '/';
+    if (isHome) {
+      return (
+        <AppBar
+          title="Readable"
+          onTitleTouchTap={ () => { history.push('/') } }
+          iconElementRight={ <FlatButton label="New post" /> }
+        />
+      )
+    }
+
+    return (
+      <AppBar
+        title="Readable"
+        onTitleTouchTap={ () => { history.push('/') } }
+      />
+    )
+  
   }
 
   render() {
@@ -148,6 +223,8 @@ class App extends Component {
     return (
       <Router>
         <div>
+
+          { this.renderAppBar() }
 
           <Route exact path="/:category/:postId" render= { ({ match }) => {
             const { postId } = match.params;

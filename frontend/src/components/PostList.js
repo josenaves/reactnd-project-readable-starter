@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Card, CardText, CardTitle } from 'material-ui/Card';
 import Score from './Score';
 import CommentsCount from './CommentsCount';
 import { ASCENDING_ORDER } from '../actions';
@@ -31,29 +32,27 @@ const PostList = ({
   return (
     <div>
       { filteredPosts.length === 0 &&
-        <div><p>No posts for [{ filter }] category</p></div> 
+      <Card><CardTitle title={`No posts for [${filter}] category`} /></Card> 
       }
 
       { filteredPosts && filteredPosts.map((p) =>
-      <div key={p.id}>
+      <Card key={p.id}>
         <Link to={`/${p.category}/${p.id}`}>
-          <h3><b>{p.title}</b></h3>
+          <CardTitle title={p.title} subtitle={p.category} />
         </Link>
-        <p>Date: {moment(p.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {p.author} :: Category [{p.category}]</p>
-        <p>{p.body}</p>
-
+        <CardText>Date: {moment(p.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {p.author} :: </CardText>
+        <CardText>{p.body}</CardText>
         <Score
           id={p.id}
           score={p.voteScore}
           increaseScoreFunc={increasePostScoreFunc}
           decreaseScoreFunc={decreasePostScoreFunc}
         />
-        
         <CommentsCount
           postId={p.id}
           comments={comments}
         />
-      </div>
+      </Card>
       )}
     </div>
   );

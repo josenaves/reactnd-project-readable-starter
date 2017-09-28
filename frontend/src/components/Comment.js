@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Score from './Score';
 import moment from 'moment';
+import { Card, CardText, CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Score from './Score';
 
 // {
 //   "id":"894tuq4ut84ut8v4t8wun89g",
@@ -21,24 +23,23 @@ const Comment = ({
 }) => {
 
   return (
-    <div key={id}>
-      
-      <p>
-        <button onClick={ () => removeCommentFunc(id) }> x </button> &nbsp;
-        <button onClick={ () => openModalEditCommentFunc(body) }> e </button> &nbsp;
+      <Card key={id}>
 
-        {author} commented on {moment(timestamp).format("MMM-DD-YYYY hh:mma")}
-      </p>
+        <CardText>{author} commented on {moment(timestamp).format("MMM-DD-YYYY hh:mma")}</CardText>
+        <CardText>{body}</CardText>
 
-      <p>{body}</p>
-      
-      <Score
-        id={id}
-        score={score}
-        increaseScoreFunc={increaseScoreFunc}
-        decreaseScoreFunc={decreaseScoreFunc}
-      />
-    </div>
+        <Score
+          id={id}
+          score={score}
+          increaseScoreFunc={increaseScoreFunc}
+          decreaseScoreFunc={decreaseScoreFunc}
+        />
+
+        <CardActions>
+          <FlatButton primary={ true } label="Edit" onClick={ () => openModalEditCommentFunc(body) } />
+          <FlatButton secondary={ true } label="Remove" onClick={ () => removeCommentFunc(id) } />
+        </CardActions>
+      </Card>
   );
 }
 
