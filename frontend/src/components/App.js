@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import * as uuid from 'uuid/v1';
@@ -183,6 +184,32 @@ class App extends Component {
     );
   }
 
+  renderAppBar() {
+    const { location, history } = this.props;
+
+    console.log(location);
+    console.log(history);
+    
+    const isHome = location.pathname === '/';
+    if (isHome) {
+      return (
+        <AppBar
+          title="Readable"
+          onTitleTouchTap={ () => { history.push('/') } }
+          iconElementRight={ <FlatButton label="New post" /> }
+        />
+      )
+    }
+
+    return (
+      <AppBar
+        title="Readable"
+        onTitleTouchTap={ () => { history.push('/') } }
+      />
+    )
+  
+  }
+
   render() {
     const {
       posts, categories, comments, sort, filter,
@@ -197,7 +224,7 @@ class App extends Component {
       <Router>
         <div>
 
-          <AppBar title="Readable" />
+          { this.renderAppBar() }
 
           <Route exact path="/:category/:postId" render= { ({ match }) => {
             const { postId } = match.params;
