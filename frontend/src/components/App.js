@@ -5,7 +5,6 @@ import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Modal from 'react-modal';
 import * as uuid from 'uuid/v1';
 import {
   getCategories,
@@ -123,9 +122,6 @@ class App extends Component {
         open={this.state.modalAddCommentOpen}
       >
         <form onSubmit={this.handleAddCommentSubmit}>
-          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleCommentChange}/></label><br/>
-          <label>Author: <input type="text" name="author" value={this.state.author} onChange={this.handleCommentChange}/></label><br/>
-          
           <TextField
             name="comment"
             value={this.state.comment}
@@ -152,20 +148,38 @@ class App extends Component {
   }
 
   renderModalEditComment(post) {
+    const actions = [
+      <RaisedButton
+        label="Cancel"
+        secondary={true}
+        onClick={this.closeModalEditComment}
+      />,
+      <RaisedButton
+        label="Save"
+        primary={true}
+        onClick={this.handleEditCommentSubmit}
+      />
+    ];
+
     return (
-      <Modal
-        className='modal'
-        overlayClassName='overlay'
-        isOpen={this.state.modalEditCommentOpen}
-        onRequestClose={this.closeModalEditComment}
-        contentLabel='Modal'
+      <Dialog
+        title="Edit comment"
+        actions={actions}
+        modal={true}
+        open={this.state.modalEditCommentOpen}
       >
-        <h4>Edit comment</h4>
         <form onSubmit={this.handleEditCommentSubmit}>
-          <label>Comment: <input type="text" name="comment" value={this.state.comment} onChange={this.handleCommentChange}/></label><br/>
-          <input type="submit" value="Submit" />
+          <TextField
+            name="comment"
+            value={this.state.comment}
+            onChange={this.handleCommentChange}
+            hintText="Enter your comment"
+            floatingLabelText="Comment"
+            multiLine={true}
+            rows={2}
+          />
         </form>
-      </Modal>      
+      </Dialog>      
     );
   }
 
