@@ -1,6 +1,7 @@
 import {
   fetchCategories,
   fetchPosts,
+  addPostAPI,
   fetchComments,
   increasePostScoreAPI,
   decreasePostScoreAPI,
@@ -42,10 +43,19 @@ export const DECREASE_COMMENT_SCORE = 'DECREASE_COMMENT_SCORE'
 export const SET_CATEGORY_FILTER = 'SET_CATEGORY_FILTER'
 
 // define action creators
-export const addPost = (post) => ({
-  type: ADD_POST,
-  post
-})
+export const addPost = (data) => async (dispatch) => {
+  try {
+    await addPostAPI(data)
+    dispatch({
+      type: ADD_POST,
+      post: data
+    });
+    dispatch(getPosts())
+  }
+  catch(err) {
+    console.error("Error adding new post", err)
+  }
+}
 
 const receivePosts = (posts) => ({
   type: RECEIVE_POSTS,

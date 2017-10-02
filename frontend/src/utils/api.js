@@ -27,6 +27,31 @@ export const fetchPosts = () => {
     .catch(err => console.error(err))
 }
 
+export const addPostAPI = async (data) => {
+  const options = {
+    method: 'post',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      id: data.id,
+      timestamp: data.timestamp,
+      title: data.title,
+      author: data.author,
+      body: data.body,
+      category: data.category,
+      voteScore: 0,
+      deleted: false,
+    })
+  };
+
+  try {
+    const res = await fetch(`http://localhost:5001/posts`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }  
+}
+
 export const increasePostScoreAPI = (postId) => {
   const options = {
     method: 'post',

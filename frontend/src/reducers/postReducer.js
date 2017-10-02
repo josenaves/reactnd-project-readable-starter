@@ -1,7 +1,8 @@
 import {
   RECEIVE_POSTS,
   INCREASE_POST_SCORE,
-  DECREASE_POST_SCORE
+  DECREASE_POST_SCORE,
+  ADD_POST
 } from '../actions'
 
 /*
@@ -55,6 +56,14 @@ export default (state = [], action) => {
           voteScore: p.voteScore -1
         }
       });
+
+    case ADD_POST:
+      const { post } = action;
+      const posts = [ ...state, post ];
+      console.log("ADD_POST -> state", state);
+      console.log("ADD_POST -> post", post);
+      console.log("ADD_POST -> posts", posts);
+      return posts;
 
     default:
       return state

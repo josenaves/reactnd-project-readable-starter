@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import AppToolbar from './AppToolbar';
 import PostList from './PostList';
 
@@ -7,7 +9,8 @@ const Root = (props) => {
   const {
     sort, posts, categories, comments, filter,
     changeOrderFunc, filterFunc,
-    increasePostScoreFunc, decreasePostScoreFunc
+    increasePostScoreFunc, decreasePostScoreFunc,
+    openModalAddPostFunc
   } = props;
 
   return (
@@ -30,6 +33,13 @@ const Root = (props) => {
         increasePostScoreFunc={increasePostScoreFunc}
         decreasePostScoreFunc={decreasePostScoreFunc}
       />
+
+      <FloatingActionButton
+        style={{ margin: 20 }}
+        onClick={ openModalAddPostFunc }
+      >
+        <ContentAdd />
+      </FloatingActionButton>
     </div>
   );
 };
@@ -43,7 +53,8 @@ Root.propTypes = {
   changeOrderFunc: PropTypes.func.isRequired,
   filterFunc: PropTypes.func.isRequired,
   increasePostScoreFunc: PropTypes.func.isRequired,
-  decreasePostScoreFunc: PropTypes.func.isRequired
+  decreasePostScoreFunc: PropTypes.func.isRequired,
+  openModalAddPostFunc: PropTypes.func.isRequired,
 }
 
 export default Root;
