@@ -7,7 +7,6 @@ const getAuthHeaders = () => {
 
 export const fetchCategories = () => {
   const options = { method: 'get', headers: getAuthHeaders() }
-
   return fetch('http://localhost:5001/categories', options)
     .then(
       res => res.json()
@@ -17,7 +16,6 @@ export const fetchCategories = () => {
 
 export const fetchPosts = () => {
   const options = { method: 'get', headers: getAuthHeaders() }
-
   return fetch('http://localhost:5001/posts', options)
     .then(
       res => {
@@ -25,6 +23,63 @@ export const fetchPosts = () => {
       }
     )
     .catch(err => console.error(err))
+}
+
+export const addPostAPI = async (data) => {
+  const options = {
+    method: 'post',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      id: data.id,
+      timestamp: data.timestamp,
+      title: data.title,
+      author: data.author,
+      body: data.body,
+      category: data.category,
+      voteScore: 0,
+      deleted: false
+    })
+  };
+  try {
+    const res = await fetch(`http://localhost:5001/posts`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }  
+}
+
+export const removePostAPI = async (postId) => {
+  const options = {
+    method: 'delete',
+    headers: getAuthHeaders()
+  }
+  try {
+    const res = await fetch(`http://localhost:5001/posts/${postId}`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }
+}
+
+export const editPostAPI = async (data) => {
+  const { id, title, body } = data;
+  const options = {
+    method: 'put',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title,
+      body
+    })
+  }
+  try {
+    const res = await fetch(`http://localhost:5001/posts/${id}`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }
 }
 
 export const increasePostScoreAPI = (postId) => {
@@ -35,7 +90,6 @@ export const increasePostScoreAPI = (postId) => {
       option: 'upVote'
     })
   }
-  
   return fetch(`http://localhost:5001/posts/${postId}`, options)
   .then(
     res => {
@@ -53,7 +107,6 @@ export const decreasePostScoreAPI = (postId) => {
       option: 'downVote'
     })
   }
-
   return fetch(`http://localhost:5001/posts/${postId}`, options)
   .then(
     res => {
@@ -81,7 +134,6 @@ export const increaseCommentScoreAPI = async (commentId) => {
       option: 'upVote'
     })
   }
-
   try {
     const res = await fetch(`http://localhost:5001/comments/${commentId}`, options)
     return res.json()
@@ -99,7 +151,6 @@ export const decreaseCommentScoreAPI = async (commentId) => {
       option: 'downVote'
     })
   }
-
   try {
     const res = await fetch(`http://localhost:5001/comments/${commentId}`, options)
     return res.json()
@@ -114,7 +165,6 @@ export const removeCommentAPI = async (commentId) => {
     method: 'delete',
     headers: getAuthHeaders()
   }
-
   try {
     const res = await fetch(`http://localhost:5001/comments/${commentId}`, options)
     return res.json()
@@ -137,7 +187,6 @@ export const addCommentAPI = async (data) => {
       voteScore: 0
     })
   }
-
   try {
     const res = await fetch(`http://localhost:5001/comments`, options)
     return res.json()
@@ -157,7 +206,6 @@ export const editCommentAPI = async (data) => {
       body: body
     })
   }
-
   try {
     const res = await fetch(`http://localhost:5001/comments/${id}`, options)
     return res.json()

@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Card, CardText, CardTitle } from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import ContentRemove from 'material-ui/svg-icons/action/delete';
+import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Score from './Score';
 import CommentsCount from './CommentsCount';
 import { ASCENDING_ORDER } from '../actions';
@@ -12,6 +15,8 @@ const PostList = ({
   comments,
   increasePostScoreFunc,
   decreasePostScoreFunc,
+  removePostFunc,
+  openModalEditCommentFunc,
   sort,
   filter
 }) => {
@@ -52,6 +57,23 @@ const PostList = ({
           postId={p.id}
           comments={comments}
         />
+
+        <RaisedButton
+          label="Edit"
+          onClick={() => openModalEditCommentFunc({ id: p.id, title: p.title , body: p.body })}
+          style={{margin: 12}}
+        >
+          <EditorModeEdit />
+        </RaisedButton>  
+
+        <RaisedButton
+          onClick={() => removePostFunc(p.id)}
+          label="Remove"
+          style={{margin: 12}}
+        >
+          <ContentRemove />
+        </RaisedButton>
+        
       </Card>
       )}
     </div>
@@ -64,7 +86,9 @@ PostList.propTypes = {
   sort: PropTypes.object.isRequired,
   filter: PropTypes.string.isRequired,
   increasePostScoreFunc: PropTypes.func.isRequired,
-  decreasePostScoreFunc: PropTypes.func.isRequired
+  decreasePostScoreFunc: PropTypes.func.isRequired,
+  removePostFunc: PropTypes.func.isRequired,
+  openModalEditCommentFunc: PropTypes.func.isRequired,
 }
 
 export default PostList;

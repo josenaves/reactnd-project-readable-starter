@@ -3,13 +3,15 @@ import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import * as uuid from 'uuid/v1';
 import {
   getCategories,
   getPosts,
+  addPost,
+  removePost,
+  editPost,
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
@@ -33,12 +35,55 @@ class App extends Component {
     modalAddCommentOpen: false,
     modalEditCommentOpen: false,
     comment: '',
-    author: ''
+    author: '',
+    modalAddPostOpen: false,
+    postTitle: '',
+    postBody: '',
+    postAuthor: '',
+    postCategory: '',
+    modalEditPostOpen: false,
+    postEditId: '',
+    postEditTitle: '',
+    postEditBody: ''
   }
 
   componentWillMount() {
     this.props.getAllCategories();
     this.props.getPosts();
+  }
+
+  openModalAddPost = () => {
+    this.setState(() => ({
+      modalAddPostOpen: true
+    }))
+  }
+
+  closeModalAddPost = () => {
+    this.setState(() => ({
+      modalAddPostOpen: false,
+      postTitle: '',
+      postBody: '',
+      postAuthor: '',
+      postCategory: ''
+    }))
+  }
+
+  openModalEditPost = (data) => {
+    this.setState(() => ({
+      modalEditPostOpen: true,
+      postEditId: data.id,
+      postEditTitle: data.title,
+      postEditBody: data.body
+    }))
+  }
+
+  closeModalEditPost = () => {
+    this.setState(() => ({
+      modalEditPostOpen: false,
+      postEditId: '',
+      postEditTitle: '',
+      postEditBody: ''
+    }))
   }
 
   openModalAddComment = () => {
@@ -99,6 +144,38 @@ class App extends Component {
     };
     this.props.editComment(comment);
     this.closeModalEditComment();
+  }
+
+  handlePostChange = (event) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({ [name]: value });
+  }
+
+  handleAddPostSubmit = (event) => {
+    event.preventDefault();
+    const post = { 
+      id: uuid(),
+      timestamp: Date.now(),
+      title: this.state.postTitle,
+      body: this.state.postBody,
+      author: this.state.postAuthor,
+      category: this.state.postCategory
+    };
+    this.props.addPost(post);
+    this.closeModalAddPost();
+  }
+
+  handleEditPostSubmit = (event) => {
+    event.preventDefault();
+    const post = { 
+      id: this.state.postEditId,
+      title: this.state.postEditTitle,
+      body: this.state.postEditBody
+    };
+    this.props.editPost(post);
+    this.closeModalEditPost();
   }
 
   renderModalAddComment(post) {
@@ -184,30 +261,114 @@ class App extends Component {
     );
   }
 
+  renderModalAddPost() {
+    const actions = [
+      <RaisedButton
+        label="Cancel"
+        secondary={true}
+        onClick={this.closeModalAddPost}
+      />,
+      <RaisedButton
+        label="Add"
+        primary={true}
+        onClick={this.handleAddPostSubmit}
+      />
+    ];
+
+    return (
+      <Dialog
+        title="New post"
+        actions={actions}
+        modal={true}
+        open={this.state.modalAddPostOpen}
+      >
+        <form onSubmit={this.handleAddPostSubmit}>
+          <TextField
+            name="postTitle"
+            value={this.state.postTitle}
+            onChange={this.handlePostChange}
+            hintText="Enter post title"
+            floatingLabelText="Post title"
+          />
+          <br/>
+          <TextField
+            name="postAuthor"
+            value={this.state.postAuthor}
+            onChange={this.handlePostChange}
+            hintText="Enter post author"
+            floatingLabelText="Post author"
+          />
+          <br/>
+          <TextField
+            name="postCategory"
+            value={this.state.postCategory}
+            onChange={this.handlePostChange}
+            hintText="Enter post category"
+            floatingLabelText="Post category"
+          />
+          <br/>
+          <TextField
+            name="postBody"
+            value={this.state.postBody}
+            onChange={this.handlePostChange}
+            hintText="Enter post body"
+            floatingLabelText="Post body"
+          />
+        </form>
+      </Dialog>
+    );
+  }
+
+  renderModalEditPost() {
+    const actions = [
+      <RaisedButton
+        label="Cancel"
+        secondary={true}
+        onClick={this.closeModalEditPost}
+      />,
+      <RaisedButton
+        label="Save"
+        primary={true}
+        onClick={this.handleEditPostSubmit}
+      />
+    ];
+
+    return (
+      <Dialog
+        title="Edit post"
+        actions={actions}
+        modal={true}
+        open={this.state.modalEditPostOpen}
+      >
+        <form onSubmit={this.handleEditPostSubmit}>
+          <TextField
+            name="postEditTitle"
+            value={this.state.postEditTitle}
+            onChange={this.handlePostChange}
+            hintText="Enter post title"
+            floatingLabelText="Post title"
+          />
+          <br/>
+          <TextField
+            name="postEditBody"
+            value={this.state.postEditBody}
+            onChange={this.handlePostChange}
+            hintText="Enter post body"
+            floatingLabelText="Post body"
+          />
+        </form>
+      </Dialog>
+    );
+  }
+
   renderAppBar() {
-    const { location, history } = this.props;
-
-    console.log(location);
-    console.log(history);
-    
-    const isHome = location.pathname === '/';
-    if (isHome) {
-      return (
-        <AppBar
-          title="Readable"
-          onTitleTouchTap={ () => { history.push('/') } }
-          iconElementRight={ <FlatButton label="New post" /> }
-        />
-      )
-    }
-
+    const { history } = this.props;
     return (
       <AppBar
         title="Readable"
         onTitleTouchTap={ () => { history.push('/') } }
       />
     )
-  
   }
 
   render() {
@@ -217,7 +378,7 @@ class App extends Component {
       increasePostScore, decreasePostScore,
       increaseCommentScore, decreaseCommentScore,
       commentsOrder, changeCommentsOrder,
-      removeComment
+      removeComment, removePost
     } = this.props;
 
     return (
@@ -270,17 +431,24 @@ class App extends Component {
           )} />
 
           <Route exact path="/" render={ () => (
-            <Root
-              sort={sort}
-              changeOrderFunc={changeSortOrder}
-              categories={categories}
-              filterFunc={setCategoryFilter}
-              posts={posts}
-              comments={comments}
-              filter={filter}
-              increasePostScoreFunc={increasePostScore}
-              decreasePostScoreFunc={decreasePostScore}
-            />
+            <div>
+              <Root
+                sort={sort}
+                changeOrderFunc={changeSortOrder}
+                categories={categories}
+                filterFunc={setCategoryFilter}
+                posts={posts}
+                comments={comments}
+                filter={filter}
+                increasePostScoreFunc={increasePostScore}
+                decreasePostScoreFunc={decreasePostScore}
+                openModalAddPostFunc={this.openModalAddPost}
+                removePostFunc={removePost}
+                openModalEditCommentFunc={this.openModalEditPost}
+              />
+              { this.renderModalAddPost() }
+              { this.renderModalEditPost() }
+            </div>
           )} />
 
         </div>
@@ -296,13 +464,22 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllCategories(){
-      dispatch(getCategories())
+      dispatch(getCategories());
     },
     getPosts(sortBy){
-      dispatch(getPosts(sortBy))
+      dispatch(getPosts(sortBy));
+    },
+    addPost(data) {
+      dispatch(addPost(data));
+    },
+    removePost(postId) {
+      dispatch(removePost(postId));
+    },
+    editPost(data) {
+      dispatch(editPost(data));
     },
     changeSortOrder(sort){
-      dispatch(changeSortOrder(sort))
+      dispatch(changeSortOrder(sort));
     },
     increasePostScore(id){
       dispatch(increasePostScore(id));
@@ -314,7 +491,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setCategoryFilter(filter));
     },
     getCommentsByPost(postId) {
-      dispatch(getCommentsByPost(postId))
+      dispatch(getCommentsByPost(postId));
     },
     increaseCommentScore(id){
       dispatch(increaseCommentScore(id));
@@ -323,16 +500,16 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(decreaseCommentScore(id));
     },
     changeCommentsOrder(order) {
-      dispatch(changeCommentsOrder(order))
+      dispatch(changeCommentsOrder(order));
     },
     removeComment(id) {
-      dispatch(removeComment(id))
+      dispatch(removeComment(id));
     },
     addComment(data) {
-      dispatch(addComment(data))
+      dispatch(addComment(data));
     },
     editComment(data) {
-      dispatch(editComment(data))
+      dispatch(editComment(data));
     }
   }
 }
