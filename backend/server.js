@@ -194,18 +194,16 @@ app.get('/posts/:id', (req, res) => {
 app.delete('/posts/:id', (req, res) => {
     posts.disable(req.token, req.params.id)
       .then(
-          (post) => {
-              comments.disableByParent(req.token, post)
-          })
-      .then(
-          (data) => res.send(data),
-          (error) => {
-              console.error(error)
-              res.status(500).send({
-                  error: 'There was an error.'
-              })
-          }
-      )
+        (post) => {
+            comments.disableByParent(req.token, post)
+            res.send(post)
+        },
+        (error) => {
+            console.error(error)
+            res.status(500).send({
+                error: 'There was an error.'
+            })
+        })
 })
 
 app.post('/posts/:id', bodyParser.json(), (req, res) => {
