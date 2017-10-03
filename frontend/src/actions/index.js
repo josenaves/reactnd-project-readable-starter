@@ -2,6 +2,7 @@ import {
   fetchCategories,
   fetchPosts,
   addPostAPI,
+  removePostAPI,
   fetchComments,
   increasePostScoreAPI,
   decreasePostScoreAPI,
@@ -43,6 +44,14 @@ export const DECREASE_COMMENT_SCORE = 'DECREASE_COMMENT_SCORE'
 export const SET_CATEGORY_FILTER = 'SET_CATEGORY_FILTER'
 
 // define action creators
+
+// this sintax is the same as:
+// addPost(data) { 
+//   return function(dispatch) {
+//     ...
+//   }
+// }
+
 export const addPost = (data) => async (dispatch) => {
   try {
     await addPostAPI(data)
@@ -57,10 +66,24 @@ export const addPost = (data) => async (dispatch) => {
   }
 }
 
+export const removePost = (id) => async (dispatch) => {
+  try {
+    await removePostAPI(id)
+    dispatch({
+      type: REMOVE_POST,
+      id
+    });
+    dispatch(getPosts())
+  }
+  catch(err) {
+    console.error("Error removing post", err)
+  }
+}
+
 const receivePosts = (posts) => ({
   type: RECEIVE_POSTS,
   posts
-})
+});
 
 export const getPosts = () => async (dispatch) => {
   try {

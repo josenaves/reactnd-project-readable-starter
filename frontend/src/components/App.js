@@ -10,6 +10,7 @@ import {
   getCategories,
   getPosts,
   addPost,
+  removePost,
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
@@ -126,6 +127,8 @@ class App extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
+
+    console.log("handlePostChange", name, value)
     this.setState({ [name]: value });
   }
 
@@ -301,7 +304,7 @@ class App extends Component {
       increasePostScore, decreasePostScore,
       increaseCommentScore, decreaseCommentScore,
       commentsOrder, changeCommentsOrder,
-      removeComment
+      removeComment, removePost
     } = this.props;
 
     return (
@@ -366,6 +369,7 @@ class App extends Component {
                 increasePostScoreFunc={increasePostScore}
                 decreasePostScoreFunc={decreasePostScore}
                 openModalAddPostFunc={this.openModalAddPost}
+                removePostFunc={removePost}
               />
               { this.renderModalAddPost() }
             </div>
@@ -384,16 +388,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllCategories(){
-      dispatch(getCategories())
+      dispatch(getCategories());
     },
     getPosts(sortBy){
-      dispatch(getPosts(sortBy))
+      dispatch(getPosts(sortBy));
     },
     addPost(data) {
-      dispatch(addPost(data))
-    },    
+      dispatch(addPost(data));
+    },
+    removePost(postId) {
+      dispatch(removePost(postId));
+    },
     changeSortOrder(sort){
-      dispatch(changeSortOrder(sort))
+      dispatch(changeSortOrder(sort));
     },
     increasePostScore(id){
       dispatch(increasePostScore(id));
@@ -405,7 +412,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setCategoryFilter(filter));
     },
     getCommentsByPost(postId) {
-      dispatch(getCommentsByPost(postId))
+      dispatch(getCommentsByPost(postId));
     },
     increaseCommentScore(id){
       dispatch(increaseCommentScore(id));
@@ -414,16 +421,16 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(decreaseCommentScore(id));
     },
     changeCommentsOrder(order) {
-      dispatch(changeCommentsOrder(order))
+      dispatch(changeCommentsOrder(order));
     },
     removeComment(id) {
-      dispatch(removeComment(id))
+      dispatch(removeComment(id));
     },
     addComment(data) {
-      dispatch(addComment(data))
+      dispatch(addComment(data));
     },
     editComment(data) {
-      dispatch(editComment(data))
+      dispatch(editComment(data));
     }
   }
 }

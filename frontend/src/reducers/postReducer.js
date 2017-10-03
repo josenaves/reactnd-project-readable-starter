@@ -2,7 +2,8 @@ import {
   RECEIVE_POSTS,
   INCREASE_POST_SCORE,
   DECREASE_POST_SCORE,
-  ADD_POST
+  ADD_POST,
+  REMOVE_POST
 } from '../actions'
 
 /*
@@ -29,9 +30,8 @@ $ curl --header "Authorization: xcx"  http://localhost:5001/posts
 */
 export default (state = [], action) => {
   switch (action.type) {
-    
     case RECEIVE_POSTS:
-      return [...action.posts]
+      return action.posts.filter( p => !p.deleted);
     
     case INCREASE_POST_SCORE:
       // find the current post and increment its score
@@ -58,12 +58,10 @@ export default (state = [], action) => {
       });
 
     case ADD_POST:
-      const { post } = action;
-      const posts = [ ...state, post ];
-      console.log("ADD_POST -> state", state);
-      console.log("ADD_POST -> post", post);
-      console.log("ADD_POST -> posts", posts);
-      return posts;
+      return [ ...state, action.post ];
+
+    case REMOVE_POST:
+      return state.filter(p => p.id !== action.id);
 
     default:
       return state
