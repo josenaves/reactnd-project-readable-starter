@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
@@ -370,12 +370,12 @@ class App extends Component {
   }
 
   renderAppBar() {
-    const { history } = this.props;
     return (
-      <AppBar
-        title="Readable"
-        onTitleTouchTap={ () => { history.push('/') } }
-      />
+      <Link style={{ textDecoration: 'none' }} to="/">
+        <AppBar
+          title="Readable"
+        />
+      </Link>
     )
   }
 
