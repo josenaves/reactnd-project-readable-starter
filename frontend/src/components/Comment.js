@@ -17,7 +17,7 @@ import Score from './Score';
 // }
 
 const Comment = ({
-  id, author, timestamp, body, score,
+  id, author, timestamp, body, score, postId,
   increaseScoreFunc, decreaseScoreFunc,
   removeCommentFunc, openModalEditCommentFunc
 }) => {
@@ -36,7 +36,7 @@ const Comment = ({
         />
 
         <CardActions>
-          <FlatButton primary={ true } label="Edit" onClick={ () => openModalEditCommentFunc(body) } />
+          <FlatButton primary={ true } label="Edit" onClick={ () => openModalEditCommentFunc({id, body, postId}) } />
           <FlatButton secondary={ true } label="Remove" onClick={ () => removeCommentFunc(id) } />
         </CardActions>
       </Card>
@@ -49,6 +49,7 @@ Comment.propTypes = {
   body: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  postId: PropTypes.string.isRequired,
   increaseScoreFunc: PropTypes.func.isRequired,
   decreaseScoreFunc: PropTypes.func.isRequired,
   removeCommentFunc: PropTypes.func.isRequired,

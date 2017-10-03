@@ -9,7 +9,6 @@ import AppToolbar from './AppToolbar';
 import { ASCENDING_ORDER } from '../actions';
 
 const PostDetail = (props) => {
-
   const {
     post, comments,
     commentsOrder,
@@ -40,6 +39,7 @@ const PostDetail = (props) => {
         body={c.body}
         author={c.author}
         score={c.voteScore}
+        postId={post.id}
         increaseScoreFunc={increaseCommentScoreFunc}
         decreaseScoreFunc={decreaseCommentScoreFunc}
         removeCommentFunc={removeCommentFunc}

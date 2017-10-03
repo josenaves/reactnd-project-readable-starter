@@ -16,7 +16,7 @@ const PostList = ({
   increasePostScoreFunc,
   decreasePostScoreFunc,
   removePostFunc,
-  openModalEditCommentFunc,
+  openModalEditPostFunc,
   sort,
   filter
 }) => {
@@ -60,7 +60,7 @@ const PostList = ({
 
         <RaisedButton
           label="Edit"
-          onClick={() => openModalEditCommentFunc({ id: p.id, title: p.title , body: p.body })}
+          onClick={() => openModalEditPostFunc({ id: p.id, title: p.title, body: p.body })}
           style={{margin: 12}}
         >
           <EditorModeEdit />
@@ -88,7 +88,7 @@ PostList.propTypes = {
   increasePostScoreFunc: PropTypes.func.isRequired,
   decreasePostScoreFunc: PropTypes.func.isRequired,
   removePostFunc: PropTypes.func.isRequired,
-  openModalEditCommentFunc: PropTypes.func.isRequired,
+  openModalEditPostFunc: PropTypes.func.isRequired,
 }
 
 export default PostList;
