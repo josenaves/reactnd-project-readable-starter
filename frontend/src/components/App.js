@@ -34,8 +34,10 @@ class App extends Component {
   state = { 
     modalAddCommentOpen: false,
     modalEditCommentOpen: false,
+    idComment: '',
     comment: '',
     author: '',
+    postId: '',
     modalAddPostOpen: false,
     postTitle: '',
     postBody: '',
@@ -100,17 +102,21 @@ class App extends Component {
     }))
   }
 
-  openModalEditComment = (body) => {
+  openModalEditComment = (data) => {
     this.setState(() => ({
       modalEditCommentOpen: true,
-      comment: body
+      idComment: data.id,
+      comment: data.body,
+      postId: data.postId
     }))
   }
 
   closeModalEditComment = () => {
     this.setState(() => ({
       modalEditCommentOpen: false,
-      comment: ''
+      idComment: '',
+      comment: '',
+      postId: ''
     }))
   }  
 
@@ -138,8 +144,9 @@ class App extends Component {
   handleEditCommentSubmit = (event) => {
     event.preventDefault();
     const comment = {
-      id: this.postId,
+      id: this.state.idComment,
       body: this.state.comment,
+      postId: this.state.postId,
       timestamp: Date.now()
     };
     this.props.editComment(comment);
@@ -444,7 +451,7 @@ class App extends Component {
                 decreasePostScoreFunc={decreasePostScore}
                 openModalAddPostFunc={this.openModalAddPost}
                 removePostFunc={removePost}
-                openModalEditCommentFunc={this.openModalEditPost}
+                openModalEditPostFunc={this.openModalEditPost}
               />
               { this.renderModalAddPost() }
               { this.renderModalEditPost() }

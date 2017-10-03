@@ -245,7 +245,7 @@ export const editComment = (data) => async (dispatch) => {
       type: EDIT_COMMENT,
       comment: data
     });
-    dispatch(getCommentsByPost(data.parentId))
+    dispatch(getCommentsByPost(data.postId))
   }
   catch(err) {
     console.error("Error editing comment", err)
