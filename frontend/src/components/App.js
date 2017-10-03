@@ -11,6 +11,7 @@ import {
   getPosts,
   addPost,
   removePost,
+  editPost,
   changeSortOrder,
   increasePostScore,
   decreasePostScore,
@@ -39,7 +40,11 @@ class App extends Component {
     postTitle: '',
     postBody: '',
     postAuthor: '',
-    postCategory: ''
+    postCategory: '',
+    modalEditPostOpen: false,
+    postEditId: '',
+    postEditTitle: '',
+    postEditBody: ''
   }
 
   componentWillMount() {
@@ -60,6 +65,24 @@ class App extends Component {
       postBody: '',
       postAuthor: '',
       postCategory: ''
+    }))
+  }
+
+  openModalEditPost = (data) => {
+    this.setState(() => ({
+      modalEditPostOpen: true,
+      postEditId: data.id,
+      postEditTitle: data.title,
+      postEditBody: data.body
+    }))
+  }
+
+  closeModalEditPost = () => {
+    this.setState(() => ({
+      modalEditPostOpen: false,
+      postEditId: '',
+      postEditTitle: '',
+      postEditBody: ''
     }))
   }
 
@@ -127,8 +150,6 @@ class App extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-
-    console.log("handlePostChange", name, value)
     this.setState({ [name]: value });
   }
 
@@ -144,6 +165,17 @@ class App extends Component {
     };
     this.props.addPost(post);
     this.closeModalAddPost();
+  }
+
+  handleEditPostSubmit = (event) => {
+    event.preventDefault();
+    const post = { 
+      id: this.state.postEditId,
+      title: this.state.postEditTitle,
+      body: this.state.postEditBody
+    };
+    this.props.editPost(post);
+    this.closeModalEditPost();
   }
 
   renderModalAddComment(post) {
@@ -287,6 +319,48 @@ class App extends Component {
     );
   }
 
+  renderModalEditPost() {
+    const actions = [
+      <RaisedButton
+        label="Cancel"
+        secondary={true}
+        onClick={this.closeModalEditPost}
+      />,
+      <RaisedButton
+        label="Save"
+        primary={true}
+        onClick={this.handleEditPostSubmit}
+      />
+    ];
+
+    return (
+      <Dialog
+        title="Edit post"
+        actions={actions}
+        modal={true}
+        open={this.state.modalEditPostOpen}
+      >
+        <form onSubmit={this.handleEditPostSubmit}>
+          <TextField
+            name="postEditTitle"
+            value={this.state.postEditTitle}
+            onChange={this.handlePostChange}
+            hintText="Enter post title"
+            floatingLabelText="Post title"
+          />
+          <br/>
+          <TextField
+            name="postEditBody"
+            value={this.state.postEditBody}
+            onChange={this.handlePostChange}
+            hintText="Enter post body"
+            floatingLabelText="Post body"
+          />
+        </form>
+      </Dialog>
+    );
+  }
+
   renderAppBar() {
     const { history } = this.props;
     return (
@@ -370,8 +444,10 @@ class App extends Component {
                 decreasePostScoreFunc={decreasePostScore}
                 openModalAddPostFunc={this.openModalAddPost}
                 removePostFunc={removePost}
+                openModalEditCommentFunc={this.openModalEditPost}
               />
               { this.renderModalAddPost() }
+              { this.renderModalEditPost() }
             </div>
           )} />
 
@@ -398,6 +474,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     removePost(postId) {
       dispatch(removePost(postId));
+    },
+    editPost(data) {
+      dispatch(editPost(data));
     },
     changeSortOrder(sort){
       dispatch(changeSortOrder(sort));

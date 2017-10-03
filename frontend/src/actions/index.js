@@ -3,6 +3,7 @@ import {
   fetchPosts,
   addPostAPI,
   removePostAPI,
+  editPostAPI,
   fetchComments,
   increasePostScoreAPI,
   decreasePostScoreAPI,
@@ -77,6 +78,20 @@ export const removePost = (id) => async (dispatch) => {
   }
   catch(err) {
     console.error("Error removing post", err)
+  }
+}
+
+export const editPost = (data) => async (dispatch) => {
+  try {
+    await editPostAPI(data)
+    dispatch({
+      type: EDIT_POST,
+      post: data
+    });
+    dispatch(getPosts());
+  }
+  catch(err) {
+    console.error("Error editing post", err)
   }
 }
 

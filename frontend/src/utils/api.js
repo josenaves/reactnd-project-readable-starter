@@ -63,6 +63,25 @@ export const removePostAPI = async (postId) => {
   }
 }
 
+export const editPostAPI = async (data) => {
+  const { id, title, body } = data;
+  const options = {
+    method: 'put',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title,
+      body
+    })
+  }
+  try {
+    const res = await fetch(`http://localhost:5001/posts/${id}`, options)
+    return res.json()
+  }
+  catch (err) {
+    console.error(err)
+  }
+}
+
 export const increasePostScoreAPI = (postId) => {
   const options = {
     method: 'post',

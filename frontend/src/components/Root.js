@@ -10,7 +10,8 @@ const Root = (props) => {
     sort, posts, categories, comments, filter,
     changeOrderFunc, filterFunc,
     increasePostScoreFunc, decreasePostScoreFunc,
-    openModalAddPostFunc, removePostFunc
+    openModalAddPostFunc, removePostFunc,
+    openModalEditCommentFunc
   } = props;
 
   return (
@@ -33,6 +34,7 @@ const Root = (props) => {
         increasePostScoreFunc={increasePostScoreFunc}
         decreasePostScoreFunc={decreasePostScoreFunc}
         removePostFunc={removePostFunc}
+        openModalEditCommentFunc={openModalEditCommentFunc}
       />
 
       <FloatingActionButton
@@ -56,7 +58,8 @@ Root.propTypes = {
   increasePostScoreFunc: PropTypes.func.isRequired,
   decreasePostScoreFunc: PropTypes.func.isRequired,
   openModalAddPostFunc: PropTypes.func.isRequired,
-  removePostFunc: PropTypes.func.isRequired
+  removePostFunc: PropTypes.func.isRequired,
+  openModalEditCommentFunc: PropTypes.func.isRequired
 }
 
 export default Root;

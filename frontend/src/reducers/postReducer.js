@@ -3,7 +3,8 @@ import {
   INCREASE_POST_SCORE,
   DECREASE_POST_SCORE,
   ADD_POST,
-  REMOVE_POST
+  REMOVE_POST,
+  EDIT_POST
 } from '../actions'
 
 /*
@@ -63,6 +64,18 @@ export default (state = [], action) => {
     case REMOVE_POST:
       return state.filter(p => p.id !== action.id);
 
+    case EDIT_POST:
+      return state.map(p => {
+        if (p.id !== action.id) {
+          return p;
+        }
+        return {
+          ...p,
+          title: action.title,
+          body: action.body
+        }
+      });
+    
     default:
       return state
   }
