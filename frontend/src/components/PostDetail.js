@@ -74,7 +74,7 @@ const PostDetail = (props) => {
 
       <RaisedButton
         label="Write a comment"
-        onClick={ () => openModalAddCommentFunc() }
+        onClick={ () => openModalAddCommentFunc({ postId: post.id}) }
         style={{ margin: 12 }} />
 
       { cmts }      

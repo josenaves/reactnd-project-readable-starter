@@ -88,9 +88,10 @@ class App extends Component {
     }))
   }
 
-  openModalAddComment = () => {
+  openModalAddComment = (data) => {
     this.setState(() => ({
-      modalAddCommentOpen: true
+      modalAddCommentOpen: true,
+      postId: data.postId
     }))
   }
 
@@ -134,7 +135,7 @@ class App extends Component {
       body: this.state.comment,
       author: this.state.author,
       timestamp: Date.now(),
-      parentId: this.postId,
+      parentId: this.state.postId,
       voteScore: 0
     };
     this.props.addComment(comment);
@@ -402,8 +403,6 @@ class App extends Component {
             if (!post) {
               return (<p>No post found for post id ${postId}</p>);  
             }
-
-            this.postId = postId; // TODO must find a better way to do this - used this variable on handleAddCommentSubmit
 
             return (
               <div>
