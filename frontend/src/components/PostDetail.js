@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom'
 import { Card, CardText, CardTitle } from 'material-ui/Card';
+import Chip from 'material-ui/Chip';
 import RaisedButton from 'material-ui/RaisedButton';
 import Comment from './Comment';
 import Score from './Score';
@@ -58,7 +60,17 @@ const PostDetail = (props) => {
       />
 
       <Card>
-        <CardTitle title={post.title} subtitle={post.category} />
+        <CardTitle title={post.title} />
+
+        <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+          <Link to={`/${post.category}`}>
+            <Chip style={{ marginLeft: 10 }}>
+              {post.category}
+            </Chip>
+          </Link>
+        </div>
+
+
         <CardText>Date: {moment(post.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {post.author} :: </CardText>
         <CardText>{post.body}</CardText>
         

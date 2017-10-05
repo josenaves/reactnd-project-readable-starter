@@ -4,7 +4,7 @@ import { CardText } from 'material-ui/Card';
 
 const CommentsCount = ({ postId, comments }) => {
   let count = 0
-  if (comments[postId]) {
+  if (comments && comments[postId]) {
     count = comments[postId].length
   }
   const commentText = count === 1 ? "comment" : "comments";
