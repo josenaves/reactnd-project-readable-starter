@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   ASCENDING_ORDER,
   DESCENDING_ORDER 
-} from '../actions'
+} from '../actions/types'
 
 const onSortOrderChanged = (event) => {
   const newSort = {

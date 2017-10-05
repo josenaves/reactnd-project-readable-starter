@@ -6,7 +6,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import {
   ASCENDING_ORDER,
   DESCENDING_ORDER 
-} from '../actions'
+} from '../actions/types'
 
 const AppToolbar = ({ categories, filter, filterFunc, filterTitle, sort, changeOrderFunc, sortingTitle }) => {
 

@@ -1,6 +1,4 @@
-import {
-  SET_CATEGORY_FILTER
-} from '../actions'
+import { SET_CATEGORY_FILTER } from '../actions/types'
 
 export default (state = "", action) => {
   switch (action.type) {

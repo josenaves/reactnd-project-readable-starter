@@ -5,7 +5,7 @@ import {
   REMOVE_COMMENT,
   ADD_COMMENT,
   EDIT_COMMENT
-} from '../actions'
+} from '../actions/types'
 
 export default (initialState = {}, action) => {
   switch (action.type) {

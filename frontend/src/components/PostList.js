@@ -8,7 +8,7 @@ import ContentRemove from 'material-ui/svg-icons/action/delete';
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Score from './Score';
 import CommentsCount from './CommentsCount';
-import { ASCENDING_ORDER } from '../actions';
+import { ASCENDING_ORDER } from '../actions/types';
 
 const PostList = ({
   posts,

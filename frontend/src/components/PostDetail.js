@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Comment from './Comment';
 import Score from './Score';
 import AppToolbar from './AppToolbar';
-import { ASCENDING_ORDER } from '../actions';
+import { ASCENDING_ORDER } from '../actions/types';
 
 const PostDetail = (props) => {
   const {
