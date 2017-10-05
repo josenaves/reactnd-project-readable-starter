@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Card, CardText, CardTitle } from 'material-ui/Card';
+import Chip from 'material-ui/Chip';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentRemove from 'material-ui/svg-icons/action/delete';
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
@@ -43,8 +44,17 @@ const PostList = ({
       { filteredPosts && filteredPosts.map((p) =>
       <Card key={p.id}>
         <Link to={`/${p.category}/${p.id}`}>
-          <CardTitle title={p.title} subtitle={p.category} />
+          <CardTitle title={p.title} />
         </Link>
+        
+        <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+          <Link to={`/${p.category}`}>
+            <Chip style={{ marginLeft: 10 }}>
+              {p.category}
+            </Chip>
+          </Link>
+        </div>
+
         <CardText>Date: {moment(p.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {p.author} :: </CardText>
         <CardText>{p.body}</CardText>
         <Score

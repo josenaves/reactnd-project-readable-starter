@@ -426,14 +426,21 @@ class App extends Component {
           }} />
 
           <Route exact path="/:category" render={ ({ match }) => (
-            <Category
-              sort={sort}
-              filter={match.params.category}
-              posts={posts}
-              changeOrderFunc={changeSortOrder}
-              increasePostScoreFunc={increasePostScore}
-              decreasePostScoreFunc={decreasePostScore}
-            />
+            <div>
+              <Category
+                sort={sort}
+                filter={match.params.category}
+                comments={comments}
+                commentsOrder={commentsOrder}
+                posts={posts}
+                changeOrderFunc={changeSortOrder}
+                increasePostScoreFunc={increasePostScore}
+                decreasePostScoreFunc={decreasePostScore}
+                removePostFunc={removePost}
+                openModalEditPostFunc={this.openModalEditPost}
+              />
+              { this.renderModalEditPost() }
+            </div>
           )} />
 
           <Route exact path="/" render={ () => (
