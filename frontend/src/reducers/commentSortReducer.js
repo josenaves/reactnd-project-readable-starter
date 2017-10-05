@@ -1,7 +1,7 @@
 import {
   CHANGE_COMMENTS_ORDER,
   DESCENDING_ORDER
-} from '../actions'
+} from '../actions/types'
 
 const defaultSortOrder = {
   field: 'voteScore',

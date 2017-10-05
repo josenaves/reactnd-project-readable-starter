@@ -5,7 +5,7 @@ import {
   ADD_POST,
   REMOVE_POST,
   EDIT_POST
-} from '../actions'
+} from '../actions/types'
 
 /*
 $ curl --header "Authorization: xcx"  http://localhost:5001/posts
