@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
 import * as uuid from 'uuid/v1';
 import {
@@ -46,7 +47,9 @@ class App extends Component {
     modalEditPostOpen: false,
     postEditId: '',
     postEditTitle: '',
-    postEditBody: ''
+    postEditBody: '',
+    validationError: 'Enter all mandatory information',
+    snackOpen: false
   }
 
   componentWillMount() {
@@ -130,6 +133,12 @@ class App extends Component {
 
   handleAddCommentSubmit = (event) => {
     event.preventDefault();
+
+    const fields = [ this.state.comment, this.state.author ];
+    if (!this.validateMandatoryFields(fields)) {
+      return;
+    }
+
     const comment = { 
       id: uuid(),
       body: this.state.comment,
@@ -144,6 +153,12 @@ class App extends Component {
 
   handleEditCommentSubmit = (event) => {
     event.preventDefault();
+
+    const fields = [ this.state.comment ];
+    if (!this.validateMandatoryFields(fields)) {
+      return;
+    }
+
     const comment = {
       id: this.state.idComment,
       body: this.state.comment,
@@ -163,6 +178,18 @@ class App extends Component {
 
   handleAddPostSubmit = (event) => {
     event.preventDefault();
+
+    const fields = [
+      this.state.postTitle,
+      this.state.postBody,
+      this.state.postAuthor,
+      this.state.postCategory
+    ];
+
+    if (!this.validateMandatoryFields(fields)) {
+      return;
+    }
+
     const post = { 
       id: uuid(),
       timestamp: Date.now(),
@@ -175,8 +202,28 @@ class App extends Component {
     this.closeModalAddPost();
   }
 
+  validateMandatoryFields(fields) {
+    for (let f of fields) {
+      if (!f) {
+        this.setState({ snackOpen: true });
+        return false;
+      }
+    }
+    return true;
+  }
+
   handleEditPostSubmit = (event) => {
     event.preventDefault();
+
+    const fields = [
+      this.state.postEditTitle,
+      this.state.postEditBody
+    ];
+
+    if (!this.validateMandatoryFields(fields)) {
+      return;
+    }
+    
     const post = { 
       id: this.state.postEditId,
       title: this.state.postEditTitle,
@@ -201,35 +248,40 @@ class App extends Component {
     ];
 
     return (
-      <Dialog
-        title="New comment"
-        actions={actions}
-        modal={true}
-        open={this.state.modalAddCommentOpen}
-      >
-        <form onSubmit={this.handleAddCommentSubmit}>
-          <TextField
-            name="comment"
-            value={this.state.comment}
-            onChange={this.handleCommentChange}
-            hintText="Enter your comment"
-            floatingLabelText="Comment"
-            multiLine={true}
-            rows={2}
-          />
-          
-          <br/>
+      <div>
+        <Dialog
+          title="New comment"
+          actions={actions}
+          modal={true}
+          open={this.state.modalAddCommentOpen}
+        >
+          <form onSubmit={this.handleAddCommentSubmit}>
+            <TextField
+              name="comment"
+              value={this.state.comment}
+              onChange={this.handleCommentChange}
+              hintText="Enter your comment"
+              floatingLabelText="Comment"
+              multiLine={true}
+              rows={2}
+              errorText={this.state.comment === '' ? 'Mandatory field' : '' }
+            />
+            
+            <br/>
 
-          <TextField
-            name="author"
-            value={this.state.author}
-            onChange={this.handleCommentChange}
-            hintText="Enter the author"
-            floatingLabelText="Author"
-          />
-        </form>
+            <TextField
+              name="author"
+              value={this.state.author}
+              onChange={this.handleCommentChange}
+              hintText="Enter the author"
+              floatingLabelText="Author"
+              errorText={this.state.author === '' ? 'Mandatory field' : '' }
+            />
+          </form>
 
-      </Dialog>
+        </Dialog>
+        { this.renderSnackbarError() }
+      </div>
     );
   }
 
@@ -248,24 +300,28 @@ class App extends Component {
     ];
 
     return (
-      <Dialog
-        title="Edit comment"
-        actions={actions}
-        modal={true}
-        open={this.state.modalEditCommentOpen}
-      >
-        <form onSubmit={this.handleEditCommentSubmit}>
-          <TextField
-            name="comment"
-            value={this.state.comment}
-            onChange={this.handleCommentChange}
-            hintText="Enter your comment"
-            floatingLabelText="Comment"
-            multiLine={true}
-            rows={2}
-          />
-        </form>
-      </Dialog>      
+      <div>
+        <Dialog
+          title="Edit comment"
+          actions={actions}
+          modal={true}
+          open={this.state.modalEditCommentOpen}
+        >
+          <form onSubmit={this.handleEditCommentSubmit}>
+            <TextField
+              name="comment"
+              value={this.state.comment}
+              onChange={this.handleCommentChange}
+              hintText="Enter your comment"
+              floatingLabelText="Comment"
+              multiLine={true}
+              rows={2}
+              errorText={this.state.comment === '' ? 'Mandatory field' : '' }
+            />
+          </form>
+        </Dialog>      
+        { this.renderSnackbarError() }
+      </div>
     );
   }
 
@@ -284,46 +340,58 @@ class App extends Component {
     ];
 
     return (
-      <Dialog
-        title="New post"
-        actions={actions}
-        modal={true}
-        open={this.state.modalAddPostOpen}
-      >
-        <form onSubmit={this.handleAddPostSubmit}>
-          <TextField
-            name="postTitle"
-            value={this.state.postTitle}
-            onChange={this.handlePostChange}
-            hintText="Enter post title"
-            floatingLabelText="Post title"
-          />
-          <br/>
-          <TextField
-            name="postAuthor"
-            value={this.state.postAuthor}
-            onChange={this.handlePostChange}
-            hintText="Enter post author"
-            floatingLabelText="Post author"
-          />
-          <br/>
-          <TextField
-            name="postCategory"
-            value={this.state.postCategory}
-            onChange={this.handlePostChange}
-            hintText="Enter post category"
-            floatingLabelText="Post category"
-          />
-          <br/>
-          <TextField
-            name="postBody"
-            value={this.state.postBody}
-            onChange={this.handlePostChange}
-            hintText="Enter post body"
-            floatingLabelText="Post body"
-          />
-        </form>
-      </Dialog>
+      <div>
+        <Dialog
+          title="New post"
+          actions={actions}
+          modal={true}
+          open={this.state.modalAddPostOpen}
+        >
+          <form onSubmit={this.handleAddPostSubmit}>
+            <TextField
+              name="postTitle"
+              value={this.state.postTitle}
+              onChange={this.handlePostChange}
+              hintText="Enter post title"
+              floatingLabelText="Post title"
+              errorText={this.state.postTitle === '' ? 'Mandatory field' : '' }
+            />
+            <br/>
+            <TextField
+              name="postAuthor"
+              value={this.state.postAuthor}
+              onChange={this.handlePostChange}
+              hintText="Enter post author"
+              floatingLabelText="Post author"
+              errorText={this.state.postAuthor === '' ? 'Mandatory field' : '' }
+            />
+            <br/>
+            <TextField
+              name="postCategory"
+              value={this.state.postCategory}
+              onChange={this.handlePostChange}
+              hintText="Enter post category"
+              floatingLabelText="Post category"
+              errorText={
+                this.state.postCategory === '' 
+                  ? 'Mandatory field'
+                  : '' }
+            />
+            <br/>
+            <TextField
+              name="postBody"
+              value={this.state.postBody}
+              onChange={this.handlePostChange}
+              hintText="Enter post body"
+              floatingLabelText="Post body"
+              errorText={this.state.postBody === '' ? 'Mandatory field' : '' }
+            />
+          </form>
+        </Dialog>
+
+        { this.renderSnackbarError() }
+
+      </div>
     );
   }
 
@@ -342,30 +410,49 @@ class App extends Component {
     ];
 
     return (
-      <Dialog
-        title="Edit post"
-        actions={actions}
-        modal={true}
-        open={this.state.modalEditPostOpen}
-      >
-        <form onSubmit={this.handleEditPostSubmit}>
-          <TextField
-            name="postEditTitle"
-            value={this.state.postEditTitle}
-            onChange={this.handlePostChange}
-            hintText="Enter post title"
-            floatingLabelText="Post title"
-          />
-          <br/>
-          <TextField
-            name="postEditBody"
-            value={this.state.postEditBody}
-            onChange={this.handlePostChange}
-            hintText="Enter post body"
-            floatingLabelText="Post body"
-          />
-        </form>
-      </Dialog>
+      <div>
+
+        <Dialog
+          title="Edit post"
+          actions={actions}
+          modal={true}
+          open={this.state.modalEditPostOpen}
+        >
+          <form onSubmit={this.handleEditPostSubmit}>
+            <TextField
+              name="postEditTitle"
+              value={this.state.postEditTitle}
+              onChange={this.handlePostChange}
+              hintText="Enter post title"
+              floatingLabelText="Post title"
+              errorText={this.state.postEditTitle === '' ? 'Mandatory field' : '' }
+            />
+            <br/>
+            <TextField
+              name="postEditBody"
+              value={this.state.postEditBody}
+              onChange={this.handlePostChange}
+              hintText="Enter post body"
+              floatingLabelText="Post body"
+              errorText={this.state.postEditBody === '' ? 'Mandatory field' : '' }
+            />
+          </form>
+        </Dialog>
+
+        { this.renderSnackbarError() }
+
+      </div>
+    );
+  }
+
+  renderSnackbarError() {
+    return (
+      <Snackbar
+        open={this.state.snackOpen}
+        message={this.state.validationError}
+        autoHideDuration={3000}
+        onRequestClose={() => this.setState({snackOpen: false})}
+      />
     );
   }
 
@@ -378,7 +465,7 @@ class App extends Component {
       </Link>
     )
   }
-
+  
   render() {
     const {
       posts, categories, comments, sort, filter,
