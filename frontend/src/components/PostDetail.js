@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { Card, CardText, CardTitle } from 'material-ui/Card';
 import Chip from 'material-ui/Chip';
 import RaisedButton from 'material-ui/RaisedButton';
+import CommentsCount from './CommentsCount';
 import Comment from './Comment';
 import Score from './Score';
 import AppToolbar from './AppToolbar';
@@ -28,12 +29,12 @@ const PostDetail = (props) => {
     comments.sort( (a, b) => b[commentsOrder.field] - a[commentsOrder.field] )
   }
 
-  let title = <h4>No comments</h4>;
-  let cmts;
+  let commentSectionTitle = <h4>No comments</h4>;
+  let commentList;
 
   if (comments.length !== 0) {
-    title = <h4>Comments</h4>;
-    cmts = comments.map((c) =>
+    commentSectionTitle = <h4>Comments</h4>;
+    commentList = comments.map((c) =>
       <Comment
         key={c.id}
         id={c.id}
@@ -70,7 +71,6 @@ const PostDetail = (props) => {
           </Link>
         </div>
 
-
         <CardText>Date: {moment(post.timestamp).format("MMM-DD-YYYY hh:mma")} :: Author: {post.author} :: </CardText>
         <CardText>{post.body}</CardText>
         
@@ -80,16 +80,22 @@ const PostDetail = (props) => {
           increaseScoreFunc={increasePostScoreFunc}
           decreaseScoreFunc={decreasePostScoreFunc}
         />
+
+        <CommentsCount
+          postId={post.id}
+          comments={comments}
+        />
+
       </Card>
 
-      { title }
+      { commentSectionTitle }
 
       <RaisedButton
         label="Write a comment"
         onClick={ () => openModalAddCommentFunc({ postId: post.id}) }
         style={{ margin: 12 }} />
 
-      { cmts }      
+      { commentList }      
      
     </div>
   );
