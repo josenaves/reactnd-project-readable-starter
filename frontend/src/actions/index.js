@@ -1,3 +1,4 @@
+import history from '../utils/history';
 import {
   fetchCategories,
   fetchPosts,
@@ -68,6 +69,7 @@ export const removePost = (id) => async (dispatch) => {
       type: REMOVE_POST,
       id
     });
+    history.push('/');
   }
   catch(err) {
     console.error("Error removing post", err)

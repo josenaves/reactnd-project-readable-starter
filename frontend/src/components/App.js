@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, withRouter, Link } from 'react-router-dom';
+import { Router, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
@@ -28,6 +28,7 @@ import {
 import Root from './Root';
 import Category from './Category';
 import PostDetail from './PostDetail';
+import history from '../utils/history';
 import './App.css';
 
 class App extends Component {
@@ -477,7 +478,7 @@ class App extends Component {
     } = this.props;
 
     return (
-      <Router>
+      <Router history={history}>
         <div>
 
           { this.renderAppBar() }
