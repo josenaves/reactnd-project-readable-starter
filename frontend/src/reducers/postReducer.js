@@ -65,14 +65,15 @@ export default (state = [], action) => {
       return state.filter(p => p.id !== action.id);
 
     case EDIT_POST:
+      const { post } = action;
       return state.map(p => {
-        if (p.id !== action.id) {
+        if (p.id !== post.id) {
           return p;
         }
         return {
           ...p,
-          title: action.title,
-          body: action.body
+          title: post.title,
+          body: post.body
         }
       });
     

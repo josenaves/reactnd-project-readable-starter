@@ -60,12 +60,13 @@ export default (initialState = {}, action) => {
       return aState;      
 
     case EDIT_COMMENT:
+      const { comment } = action;
       const eState = { ...initialState }
       let eKeys = Object.keys(initialState)
       eKeys.forEach( k => {
         eState[k] = initialState[k].map( e => {
-          if (e.id === action.id) {
-            return { ...e, body: action.body, timestamp: action.timestamp }
+          if (e.id === comment.id) {
+            return { ...e, body: comment.body, timestamp: comment.timestamp }
           }
           return e;
         })
