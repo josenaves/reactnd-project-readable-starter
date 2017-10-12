@@ -55,7 +55,6 @@ export const addPost = (data) => async (dispatch) => {
       type: ADD_POST,
       post: data
     });
-    dispatch(getPosts())
   }
   catch(err) {
     console.error("Error adding new post", err)
@@ -69,7 +68,6 @@ export const removePost = (id) => async (dispatch) => {
       type: REMOVE_POST,
       id
     });
-    dispatch(getPosts())
   }
   catch(err) {
     console.error("Error removing post", err)
@@ -83,7 +81,6 @@ export const editPost = (data) => async (dispatch) => {
       type: EDIT_POST,
       post: data
     });
-    dispatch(getPosts());
   }
   catch(err) {
     console.error("Error editing post", err)
@@ -226,7 +223,6 @@ export const addComment = (data) => async (dispatch) => {
       type: ADD_COMMENT,
       comment: data
     });
-    dispatch(getCommentsByPost(data.parentId))
   }
   catch(err) {
     console.error("Error removing comment", err)
@@ -240,7 +236,6 @@ export const editComment = (data) => async (dispatch) => {
       type: EDIT_COMMENT,
       comment: data
     });
-    dispatch(getCommentsByPost(data.postId))
   }
   catch(err) {
     console.error("Error editing comment", err)
