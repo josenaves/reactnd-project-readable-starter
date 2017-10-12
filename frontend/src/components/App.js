@@ -194,6 +194,7 @@ class App extends Component {
     const post = { 
       id: uuid(),
       timestamp: Date.now(),
+      voteScore: 0,
       title: this.state.postTitle,
       body: this.state.postBody,
       author: this.state.postAuthor,
