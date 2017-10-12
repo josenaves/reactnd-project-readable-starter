@@ -505,9 +505,12 @@ class App extends Component {
                   removeCommentFunc={removeComment}
                   openModalAddCommentFunc={this.openModalAddComment}
                   openModalEditCommentFunc={this.openModalEditComment}
+                  removePostFunc={removePost}
+                  openModalEditPostFunc={this.openModalEditPost}
                 />
                 { this.renderModalAddComment(post) }
                 { this.renderModalEditComment(post) }
+                { this.renderModalEditPost() }
               </div>                            
             );
           }} />

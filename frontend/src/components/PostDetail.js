@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { Card, CardText, CardTitle } from 'material-ui/Card';
 import Chip from 'material-ui/Chip';
 import RaisedButton from 'material-ui/RaisedButton';
+import ContentRemove from 'material-ui/svg-icons/action/delete';
+import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import CommentsCount from './CommentsCount';
 import Comment from './Comment';
 import Score from './Score';
@@ -20,7 +22,9 @@ const PostDetail = (props) => {
     increaseCommentScoreFunc, decreaseCommentScoreFunc,
     removeCommentFunc,
     openModalAddCommentFunc,
-    openModalEditCommentFunc
+    openModalEditCommentFunc,
+    removePostFunc,
+    openModalEditPostFunc,
   } = props;
 
   if (commentsOrder.order === ASCENDING_ORDER) {
@@ -86,6 +90,22 @@ const PostDetail = (props) => {
           comments={comments}
         />
 
+        <RaisedButton
+          label="Edit"
+          onClick={() => openModalEditPostFunc({ id: post.id, title: post.title, body: post.body })}
+          style={{margin: 12}}
+        >
+          <EditorModeEdit />
+        </RaisedButton>
+
+        <RaisedButton
+          onClick={() => removePostFunc(post.id)}
+          label="Remove"
+          style={{margin: 12}}
+        >
+          <ContentRemove />
+        </RaisedButton>
+
       </Card>
 
       { commentSectionTitle }
@@ -116,7 +136,9 @@ PostDetail.propTypes = {
   decreaseCommentScoreFunc: PropTypes.func.isRequired,
   removeCommentFunc: PropTypes.func.isRequired,
   openModalAddCommentFunc: PropTypes.func.isRequired,
-  openModalEditCommentFunc: PropTypes.func.isRequired
+  openModalEditCommentFunc: PropTypes.func.isRequired,
+  removePostFunc: PropTypes.func.isRequired,
+  openModalEditPostFunc: PropTypes.func.isRequired
 }
 
 export default PostDetail;
