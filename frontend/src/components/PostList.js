@@ -38,7 +38,7 @@ const PostList = ({
   return (
     <div>
       { filteredPosts.length === 0 &&
-      <Card><CardTitle title={`No posts for [${filter}] category`} /></Card> 
+      <Card><CardTitle title={'No posts'} /></Card> 
       }
 
       { filteredPosts && filteredPosts.map((p) =>
